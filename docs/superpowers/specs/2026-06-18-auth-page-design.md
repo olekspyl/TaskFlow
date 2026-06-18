@@ -65,7 +65,12 @@ Replace the current `VTabs` pill with large typographic headings. The tab-switch
 
 ## Input Fields (Floating Label)
 
-All inputs use a floating label pattern. `VInput.vue` needs a new `floatingLabel` prop (or a new variant) — the existing non-floating label mode stays intact for use elsewhere in the app.
+All inputs use a floating label pattern. `VInput.vue` script logic is untouched — no new props, no emit changes, no validation changes. The floating label is achieved purely with CSS using the `:placeholder-shown` trick:
+
+- Each `<VInput>` in the auth forms passes `placeholder=" "` (single space) — this is already supported by the existing `placeholder` attribute passthrough via `v-bind="attrs"`
+- The label floats up when `input:not(:placeholder-shown)` — i.e., when the user has typed a value
+- The label also floats on `input:focus`
+- CSS is scoped to the auth context (`.auth-card input`) in `main.css` — no changes to `VInput`'s own `<style>`
 
 ### States
 
@@ -173,8 +178,8 @@ No new keyframe animations. All transitions use `ease` or `ease-out` per Emil pr
 | `AuthCard.vue` | Restyle: invisible card, new padding/radius |
 | `LoginForm.vue` | Use floating label variant of VInput |
 | `SignupForm.vue` | Use floating label variant of VInput |
-| `VInput.vue` | Add `floating` prop/variant for floating label behavior |
-| `main.css` | Add auth-scoped CSS for floating label states, nav heading style, card style |
+| `VInput.vue` | No changes — floating label handled via CSS only |
+| `main.css` | Add auth-scoped CSS: floating label states, nav heading style, card style |
 
 ---
 
