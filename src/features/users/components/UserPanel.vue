@@ -17,7 +17,7 @@ defineProps<Props>()
 <template>
   <div class="flex w-full items-center justify-between gap-4 rounded-2xl bg-secondaryBg border border-borderDefault py-3 px-4">
     <div class="flex items-center gap-4">
-      <VSkeleton v-if="loading" width="48px" height="48px" rounded="50%" />
+      <VSkeleton v-if="loading" width="36px" height="36px" rounded="50%" />
       <div
         v-else-if="user"
         class="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-primary to-borderHover text-uiCaption text-white"
