@@ -392,6 +392,7 @@ html:not(.dark) .auth-field:has(.error) .auth-field__label {
   border: none !important;
   border-radius: 0 0 14px 14px !important;
   background: transparent !important;
+  overflow: visible !important;
 }
 
 /* Table header cells — tighter */

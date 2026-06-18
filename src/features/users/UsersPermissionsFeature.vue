@@ -75,7 +75,7 @@ const handleCheckboxChange = async (
 </script>
 
 <template>
-  <div class="perms-layout flex h-full flex-col overflow-hidden">
+  <div class="perms-layout flex h-full flex-col overflow-x-auto overflow-y-hidden">
     <UserPanel
       class="shrink-0"
       :loading="getUserLoading"
