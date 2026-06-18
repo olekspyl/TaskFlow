@@ -84,7 +84,7 @@ const handleCheckboxChange = async (
       :permissions-summary="permissionsSummary"
     />
 
-    <div class="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-auto rounded-2xl bg-secondaryBg border border-borderDefault">
+    <div class="flex shrink-0 flex-col overflow-x-auto overflow-y-auto rounded-2xl bg-secondaryBg border border-borderDefault">
       <Table
         :columns="permissionColumns"
         :items="permissionRows"
@@ -93,7 +93,7 @@ const handleCheckboxChange = async (
         :scrollable="false"
       >
         <template #toolbar>
-          <div class="flex items-center justify-between pb-3">
+          <div class="flex items-center justify-between px-3 pt-3 pb-3">
             <span class="text-headingCard text-txtPrimary">Permission matrix</span>
 
             <div class="flex items-center gap-4">

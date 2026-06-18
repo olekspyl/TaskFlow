@@ -381,10 +381,11 @@ html:not(.dark) .auth-field:has(.error) .auth-field__label {
   gap: 12px !important;
 }
 
-/* Table's internal p-6 container → no padding, let card handle it */
+/* Table's internal p-6 container → collapse padding/gap, toolbar handles its own */
 .perms-layout .p-6.box-border {
   padding: 0 !important;
   gap: 0 !important;
+  display: contents !important;
 }
 
 /* Table's inner border container → transparent, card border handles it */
