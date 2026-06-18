@@ -396,20 +396,12 @@ html:not(.dark) .auth-field:has(.error) .auth-field__label {
 
 /* Table header cells — tighter */
 .perms-layout .sticky.top-0.bg-elevated {
-  padding-top: 7px !important;
-  padding-bottom: 7px !important;
-  padding-left: 10px !important;
-  padding-right: 10px !important;
+  padding: 7px 10px !important;
 }
 
 /* Compact row height (both data rows and skeleton rows) */
 .perms-layout .h-\[70px\] {
   height: 44px !important;
-}
-
-/* Toolbar bottom spacing */
-.perms-layout .pb-4 {
-  padding-bottom: 10px !important;
 }
 
 /* Save button — gradient matching auth page */
@@ -422,9 +414,4 @@ html:not(.dark) .auth-field:has(.error) .auth-field__label {
 .perms-layout .button.primary:not(:disabled):not(.is-disabled):active {
   transform: scale(0.97) !important;
   box-shadow: 0 2px 6px rgba(62, 79, 255, 0.18) !important;
-}
-
-/* Light mode: keep Save button gradient */
-html:not(.dark) .perms-layout .button.primary {
-  background: linear-gradient(90deg, #3e4fff 0%, #6c7cff 100%) !important;
 }
