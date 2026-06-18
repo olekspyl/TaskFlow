@@ -241,20 +241,19 @@
 .auth-field__label {
   position: absolute;
   left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 16px;
+  transform: none;
   font-size: 13px;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.28);
   pointer-events: none;
   z-index: 1;
-  transition: top 160ms ease, font-size 160ms ease, color 160ms ease, transform 160ms ease;
+  transition: top 160ms ease, font-size 160ms ease, color 160ms ease;
 }
 
 .auth-field:has(input:not(:placeholder-shown)) .auth-field__label,
 .auth-field:has(input:focus) .auth-field__label {
-  top: 13px;
-  transform: translateY(0);
+  top: 8px;
   font-size: 10px;
   font-weight: 500;
   color: rgba(108, 124, 255, 0.85);
