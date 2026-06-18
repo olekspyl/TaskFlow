@@ -152,13 +152,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #06080f;
 }
 
 .auth-layout__bloom {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background: radial-gradient(
     ellipse 52% 58% at 50% 48%,
     #1c2d8a 0%,
@@ -171,6 +173,7 @@
   position: absolute;
   width: 460px;
   height: 340px;
+  z-index: 0;
   background: radial-gradient(ellipse, rgba(71, 111, 255, 0.17), transparent 70%);
   top: 50%;
   left: 50%;
