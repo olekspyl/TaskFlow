@@ -75,7 +75,7 @@ const handleCheckboxChange = async (
 </script>
 
 <template>
-  <div class="perms-layout flex h-full flex-col overflow-x-auto overflow-y-hidden">
+  <div class="perms-layout flex h-full flex-col overflow-hidden">
     <UserPanel
       class="shrink-0"
       :loading="getUserLoading"
@@ -84,7 +84,7 @@ const handleCheckboxChange = async (
       :permissions-summary="permissionsSummary"
     />
 
-    <div class="flex min-h-0 flex-1 flex-col overflow-y-auto rounded-2xl bg-secondaryBg border border-borderDefault">
+    <div class="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-auto rounded-2xl bg-secondaryBg border border-borderDefault">
       <Table
         :columns="permissionColumns"
         :items="permissionRows"
