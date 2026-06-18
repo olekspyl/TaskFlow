@@ -179,20 +179,7 @@
   color: #fff;
 }
 
-.auth-nav__item--active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #6c7cff, transparent);
-  border-radius: 2px;
-  opacity: 1;
-  transition: opacity 180ms ease;
-}
-
-.auth-nav__item:not(.auth-nav__item--active)::after {
+.auth-nav__item::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -203,6 +190,10 @@
   border-radius: 2px;
   opacity: 0;
   transition: opacity 180ms ease;
+}
+
+.auth-nav__item--active::after {
+  opacity: 1;
 }
 
 /* ─── Auth Layout ──────────────────────────────────────────── */

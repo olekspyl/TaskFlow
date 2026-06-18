@@ -24,22 +24,36 @@ const setTab = async (tab: Tab) => {
   <div class="auth-card">
     <VLoader v-if="userStore.fetchUserLoading" size="section" />
     <template v-else>
-      <nav class="auth-nav" aria-label="Auth tabs">
+      <nav class="auth-nav" aria-label="Auth tabs" role="tablist">
         <button
+          id="tab-login"
           class="auth-nav__item"
           :class="{ 'auth-nav__item--active': activeTab === 'login' }"
           type="button"
+          role="tab"
+          :aria-selected="activeTab === 'login'"
+          aria-controls="panel-login"
+          :tabindex="activeTab === 'login' ? 0 : -1"
           @click="setTab('login')"
         >Login</button>
         <button
+          id="tab-signup"
           class="auth-nav__item"
           :class="{ 'auth-nav__item--active': activeTab === 'signup' }"
           type="button"
+          role="tab"
+          :aria-selected="activeTab === 'signup'"
+          aria-controls="panel-signup"
+          :tabindex="activeTab === 'signup' ? 0 : -1"
           @click="setTab('signup')"
         >Signup</button>
       </nav>
-      <LoginForm v-if="activeTab === 'login'" />
-      <SignupForm v-else />
+      <div id="panel-login" role="tabpanel" aria-labelledby="tab-login" v-if="activeTab === 'login'">
+        <LoginForm />
+      </div>
+      <div id="panel-signup" role="tabpanel" aria-labelledby="tab-signup" v-else>
+        <SignupForm />
+      </div>
     </template>
   </div>
 </template>
