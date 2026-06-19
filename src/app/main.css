@@ -417,3 +417,26 @@ html:not(.dark) .auth-field:has(.error) .auth-field__label {
   transform: scale(0.97) !important;
   box-shadow: 0 2px 6px rgba(62, 79, 255, 0.18) !important;
 }
+
+/* ─── Sidebar Light Mode ───────────────────────────────────── */
+html:not(.dark) .sidebar {
+  background: #f4f6fb !important;
+  box-shadow: none !important;
+  border-right: 1px solid rgba(108, 124, 255, 0.1);
+}
+
+html:not(.dark) .sidebar .text-txtSecondaryDark {
+  color: rgba(15, 23, 42, 0.45) !important;
+}
+
+html:not(.dark) .sidebar .text-txtPrimaryDark {
+  color: rgba(15, 23, 42, 0.88) !important;
+}
+
+html:not(.dark) .sidebar .bg-secondaryBgDark {
+  background-color: rgba(108, 124, 255, 0.09) !important;
+}
+
+html:not(.dark) .sidebar .shadow-sidebarActive {
+  box-shadow: none !important;
+}
