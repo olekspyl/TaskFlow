@@ -45,7 +45,7 @@ const handleLogout = () => {
 
     <!-- Logo row -->
     <div class="flex shrink-0 items-center gap-[9px] border-b border-borderDefault px-4 py-[15px]">
-      <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[7px] bg-gradient-to-br from-primary to-borderDefaultDark text-[11px] font-bold text-white">
+      <div class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[7px] bg-gradient-to-br from-primary to-borderHover text-[11px] font-bold text-white">
         A
       </div>
       <span v-show="isSidebarOpen" class="truncate text-[12.5px] font-semibold leading-none text-txtPrimaryDark">

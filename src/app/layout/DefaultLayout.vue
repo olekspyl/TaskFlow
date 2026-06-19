@@ -11,7 +11,7 @@ const isSidebarOpen = ref(true)
     class="grid h-screen grid-rows-[minmax(0,1fr)] overflow-hidden bg-primaryBg text-txtPrimary"
     :class="isSidebarOpen ? 'grid-cols-[256px_minmax(0,1fr)]' : 'grid-cols-[64px_minmax(0,1fr)]'"
   >
-    <aside class="row-start-1">
+    <aside class="relative z-10 row-start-1">
       <Sidebar :is-open="isSidebarOpen" @update="isSidebarOpen = $event" />
     </aside>
 
