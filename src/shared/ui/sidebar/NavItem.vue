@@ -88,7 +88,7 @@ const handleClick = (item: Item) => {
 
 <style scoped lang="scss">
 .link {
-  @apply hover:bg-secondaryBgDark/60 hover:text-txtPrimaryDark;
+  @apply hover:bg-secondaryBgDark hover:text-txtPrimaryDark;
   @apply active:bg-secondaryBgDark active:shadow-sidebarActive;
 
   &.router-link-active {

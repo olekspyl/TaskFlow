@@ -426,17 +426,54 @@ html:not(.dark) .sidebar {
 }
 
 html:not(.dark) .sidebar .text-txtSecondaryDark {
-  color: rgba(15, 23, 42, 0.45) !important;
+  color: rgba(15, 23, 42, 0.72) !important;
 }
 
 html:not(.dark) .sidebar .text-txtPrimaryDark {
-  color: rgba(15, 23, 42, 0.88) !important;
+  color: rgba(15, 23, 42, 0.92) !important;
 }
 
 html:not(.dark) .sidebar .bg-secondaryBgDark {
-  background-color: rgba(108, 124, 255, 0.09) !important;
+  background-color: rgba(108, 124, 255, 0.1) !important;
 }
 
 html:not(.dark) .sidebar .shadow-sidebarActive {
   box-shadow: none !important;
+}
+
+/* nav item default text */
+html:not(.dark) .sidebar .link {
+  color: rgba(15, 23, 42, 0.72);
+}
+
+/* nav item hover */
+html:not(.dark) .sidebar .link:hover {
+  background-color: rgba(108, 124, 255, 0.09) !important;
+  color: rgba(15, 23, 42, 0.92) !important;
+}
+
+/* nav item active */
+html:not(.dark) .sidebar .link:active {
+  background-color: rgba(108, 124, 255, 0.15) !important;
+  box-shadow: none !important;
+}
+
+/* nav item active route */
+html:not(.dark) .sidebar .link.router-link-active {
+  background-color: rgba(108, 124, 255, 0.11) !important;
+  color: rgba(15, 23, 42, 0.92) !important;
+  box-shadow: none !important;
+}
+
+/* toggle button — visible on light sidebar */
+html:not(.dark) .sidebar button[aria-label="Toggle sidebar"] {
+  background-color: #ffffff !important;
+  border-color: #c5d5f5 !important;
+  color: rgba(15, 23, 42, 0.55) !important;
+  box-shadow: 0 1px 4px rgba(108, 124, 255, 0.15);
+}
+
+html:not(.dark) .sidebar button[aria-label="Toggle sidebar"]:hover {
+  border-color: #6c7cff !important;
+  color: #6c7cff !important;
 }

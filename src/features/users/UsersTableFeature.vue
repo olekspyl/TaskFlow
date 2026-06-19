@@ -124,7 +124,7 @@ const columns = [
         </div>
       </template>
 
-      <template #member="{ item }">
+      <template #name="{ item }">
         <div class="flex flex-col w-full items-start justify-center h-full">
           <span class="text-sm font-medium text-txtPrimary">
             {{ item.name }}
@@ -136,7 +136,9 @@ const columns = [
       </template>
 
       <template #role="{ item }">
-        <span class="flex flex-col items-center justify-center text-sm text-txtPrimary w-full h-full">
+        <span
+          class="flex flex-col items-center justify-center text-sm text-txtPrimary w-full h-full"
+        >
           {{ item.role }}
         </span>
       </template>
