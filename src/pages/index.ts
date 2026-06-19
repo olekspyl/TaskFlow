@@ -1,0 +1,5 @@
+export { default as Auth } from './Auth/index.vue'
+export { default as Dashboard } from './Dashboard/index.vue'
+export { default as NotFound } from './NotFound/index.vue'
+export { default as Users } from './Users/index.vue'
+export { default as UserPermissions } from './Users/UserPermissions.vue'

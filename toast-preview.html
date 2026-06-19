@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toast Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-primaryBg:     #F9FAFB;
+      --color-secondaryBg:   #FFFFFF;
+      --color-txtPrimary:    #0F172A;
+      --color-muted:         #94A3B8;
+      --color-elevated:      #EEF2FB;
+      --color-primary:       #476FFF;
+      --color-dangerous:     #EF4444;
+      --color-warning:       #F59E0B;
+      --color-success:       #22C55E;
+      --color-borderDefault: #D3E0FC;
+    }
+    [data-theme="dark"] {
+      --color-primaryBg:     #0B0F1A;
+      --color-secondaryBg:   #11162A;
+      --color-txtPrimary:    #E6E9F5;
+      --color-muted:         #8E97C9;
+      --color-elevated:      #1D2645;
+      --color-primary:       #6C7CFF;
+      --color-dangerous:     #EF4444;
+      --color-warning:       #F59E0B;
+      --color-success:       #22C55E;
+      --color-borderDefault: #222B57;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--color-primaryBg);
+      color: var(--color-txtPrimary);
+      min-height: 100vh;
+      transition: background 200ms ease, color 200ms ease;
+    }
+
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--color-txtPrimary);
+    }
+    .header p {
+      font-size: 12px;
+      color: var(--color-muted);
+      margin-top: 3px;
+    }
+
+    .theme-btn {
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-muted);
+      background: var(--color-secondaryBg);
+      border: 1px solid var(--color-borderDefault);
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: border-color 140ms ease, transform 120ms ease;
+    }
+    .theme-btn:hover { border-color: var(--color-primary); }
+    .theme-btn:active { transform: scale(0.97); }
+
+    .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 14px;
+    }
+
+    .stack { display: flex; flex-direction: column; gap: 10px; }
+
+    /* ─── Toast (exact copy from main.css) ─────────────────── */
+    .toast-glass {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 36px 14px 16px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      font-family: 'Inter', system-ui, sans-serif;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      background: color-mix(in srgb, var(--color-secondaryBg) 82%, transparent);
+      border: 1px solid color-mix(in srgb, var(--color-borderDefault) 70%, transparent);
+      box-shadow: 0 4px 24px -4px rgba(0,0,0,0.2), 0 1px 4px -1px rgba(0,0,0,0.12);
+    }
+
+
+    .toast-glass--success {
+      background: color-mix(in srgb, var(--color-success) 8%, color-mix(in srgb, var(--color-secondaryBg) 82%, transparent));
+      border-color: color-mix(in srgb, var(--color-success) 35%, var(--color-borderDefault));
+      box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-success) 30%, transparent), 0 4px 20px -4px rgba(0,0,0,0.18);
+    }
+    .toast-glass--error {
+      background: color-mix(in srgb, var(--color-dangerous) 8%, color-mix(in srgb, var(--color-secondaryBg) 82%, transparent));
+      border-color: color-mix(in srgb, var(--color-dangerous) 35%, var(--color-borderDefault));
+      box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-dangerous) 30%, transparent), 0 4px 20px -4px rgba(0,0,0,0.18);
+    }
+    .toast-glass--warning {
+      background: color-mix(in srgb, var(--color-warning) 8%, color-mix(in srgb, var(--color-secondaryBg) 82%, transparent));
+      border-color: color-mix(in srgb, var(--color-warning) 35%, var(--color-borderDefault));
+      box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-warning) 30%, transparent), 0 4px 20px -4px rgba(0,0,0,0.18);
+    }
+    .toast-glass--info {
+      background: color-mix(in srgb, var(--color-primary) 8%, color-mix(in srgb, var(--color-secondaryBg) 82%, transparent));
+      border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-borderDefault));
+      box-shadow: 0 0 20px -4px color-mix(in srgb, var(--color-primary) 30%, transparent), 0 4px 20px -4px rgba(0,0,0,0.18);
+    }
+    /* icon */
+    .toast-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .toast-icon svg { width: 15px; height: 15px; display: block; }
+
+    .toast-glass--success .toast-icon {
+      background: color-mix(in srgb, var(--color-success) 18%, transparent);
+      color: var(--color-success);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-success) 25%, transparent);
+    }
+    .toast-glass--error .toast-icon {
+      background: color-mix(in srgb, var(--color-dangerous) 18%, transparent);
+      color: var(--color-dangerous);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-dangerous) 25%, transparent);
+    }
+    .toast-glass--warning .toast-icon {
+      background: color-mix(in srgb, var(--color-warning) 18%, transparent);
+      color: var(--color-warning);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-warning) 25%, transparent);
+    }
+    .toast-glass--info .toast-icon {
+      background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+      color: var(--color-primary);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-primary) 25%, transparent);
+    }
+    .toast-glass--loading .toast-icon {
+      background: color-mix(in srgb, var(--color-muted) 14%, transparent);
+      color: var(--color-muted);
+    }
+
+    /* content */
+    .toast-body { flex: 1; min-width: 0; }
+
+    .toast-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--color-txtPrimary);
+    }
+    .toast-glass--success .toast-title { color: color-mix(in srgb, var(--color-success) 80%, var(--color-txtPrimary)); }
+    .toast-glass--error   .toast-title { color: color-mix(in srgb, var(--color-dangerous) 80%, var(--color-txtPrimary)); }
+    .toast-glass--warning .toast-title { color: color-mix(in srgb, var(--color-warning) 70%, var(--color-txtPrimary)); }
+    .toast-glass--info    .toast-title { color: color-mix(in srgb, var(--color-primary) 70%, var(--color-txtPrimary)); }
+
+    .toast-desc {
+      font-size: 12.5px;
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--color-muted);
+      margin-top: 3px;
+    }
+
+    /* close */
+    .toast-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--color-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease, transform 120ms ease;
+      padding: 0;
+    }
+    .toast-close svg { width: 11px; height: 11px; display: block; }
+    .toast-close:hover {
+      background: color-mix(in srgb, var(--color-muted) 15%, transparent);
+      color: var(--color-txtPrimary);
+    }
+    .toast-close:active { transform: scale(0.9); }
+
+    /* spinner */
+    .spinner {
+      width: 15px; height: 15px;
+      border: 1.5px solid color-mix(in srgb, var(--color-muted) 30%, transparent);
+      border-top-color: var(--color-muted);
+      border-radius: 50%;
+      animation: spin 700ms linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* divider */
+    hr { border: none; border-top: 1px solid var(--color-borderDefault); margin: 32px 0; opacity: .5; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div>
+      <h1>Toast Variants</h1>
+      <p>useToast() · glass design</p>
+    </div>
+    <button class="theme-btn" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? '' : 'dark'">
+      Змінити тему
+    </button>
+  </div>
+
+  <!-- Light bg simulation -->
+  <div class="label">Light theme</div>
+  <div data-theme="" style="background: #F9FAFB; padding: 20px; border-radius: 16px; border: 1px solid #D3E0FC; margin-bottom: 32px;">
+    <div class="stack">
+
+      <div class="toast-glass toast-glass--success">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><polyline points="3,8.5 6.5,12 13,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Зміни збережено</div>
+          <div class="toast-desc">Дані користувача оновлено успішно.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--error">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Помилка збереження</div>
+          <div class="toast-desc">Не вдалось зберегти дані. Спробуйте ще раз.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--warning">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2.5L14 13.5H2L8 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><line x1="8" y1="7" x2="8" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.8" r=".8" fill="currentColor"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Сесія завершується</div>
+          <div class="toast-desc">Ви будете розлоговані через 5 хвилин.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--info">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><line x1="8" y1="7" x2="8" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="currentColor"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Нові права доступу</div>
+          <div class="toast-desc">Адміністратор змінив ваш рівень доступу.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--loading">
+        <div class="toast-icon"><div class="spinner"></div></div>
+        <div class="toast-body">
+          <div class="toast-title">Завантаження...</div>
+          <div class="toast-desc">Зачекайте, обробляємо запит.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dark bg simulation -->
+  <div class="label">Dark theme</div>
+  <div style="background: #0B0F1A; padding: 20px; border-radius: 16px; border: 1px solid #222B57;">
+    <div class="stack" style="
+      --color-secondaryBg: #11162A;
+      --color-txtPrimary: #E6E9F5;
+      --color-muted: #8E97C9;
+      --color-primary: #6C7CFF;
+      --color-borderDefault: #222B57;
+      --color-success: #22C55E;
+      --color-dangerous: #EF4444;
+      --color-warning: #F59E0B;
+    ">
+
+      <div class="toast-glass toast-glass--success">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><polyline points="3,8.5 6.5,12 13,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Зміни збережено</div>
+          <div class="toast-desc">Дані користувача оновлено успішно.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--error">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Помилка збереження</div>
+          <div class="toast-desc">Не вдалось зберегти дані. Спробуйте ще раз.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--warning">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><path d="M8 2.5L14 13.5H2L8 2.5z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><line x1="8" y1="7" x2="8" y2="10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="11.8" r=".8" fill="currentColor"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Сесія завершується</div>
+          <div class="toast-desc">Ви будете розлоговані через 5 хвилин.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--info">
+        <div class="toast-icon">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.8"/><line x1="8" y1="7" x2="8" y2="11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="currentColor"/></svg>
+        </div>
+        <div class="toast-body">
+          <div class="toast-title">Нові права доступу</div>
+          <div class="toast-desc">Адміністратор змінив ваш рівень доступу.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+      <div class="toast-glass toast-glass--loading">
+        <div class="toast-icon"><div class="spinner"></div></div>
+        <div class="toast-body">
+          <div class="toast-title">Завантаження...</div>
+          <div class="toast-desc">Зачекайте, обробляємо запит.</div>
+        </div>
+        <button class="toast-close"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
