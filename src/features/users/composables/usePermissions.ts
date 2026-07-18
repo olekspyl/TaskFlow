@@ -1,8 +1,8 @@
 import { computed, ref } from 'vue'
 import { selectTypes } from '@/shared/types'
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 import { getNormalizedRouteId } from '@/shared/utils'
-import { useUsersRequests } from '@/features/users/api'
+import { usersApi } from '@/features/users/api'
 import {
   createPermissionRowsFromGroups,
   permissionsGroup,
@@ -28,17 +28,16 @@ export const usePermissions = () => {
     createPermissionRowsFromGroups(permissionsGroup.value),
   )
 
-  const { fetchUserById, getDefaultPermissionsByRoles, getPermissionsList } = useUsersRequests()
+  const { fetchUserById, getDefaultPermissionsByRoles, getPermissionsList } = usersApi()
 
   const {
     loading: getUserLoading,
     data: userData,
     execute: refetchUser,
-  } = fetchUserById(() => getNormalizedRouteId(), {
+  } = fetchUserById(getNormalizedRouteId(), {
     immediate: true,
     onSuccess: () => {
-      // swr - cache
-      //add check for userData
+      if (!userData.value) return
       const role = userData.value.role
       selectedRole.value = {
         label: role ? role.charAt(0).toUpperCase() + role.slice(1) : '',
@@ -55,10 +54,11 @@ export const usePermissions = () => {
     loading: getRolesPermissionsLoading,
   } = getDefaultPermissionsByRoles({
     immediate: true,
-    cache: { id: 'defaultPermissions', staleTime: 10_000 },
+    cache: { id: 'defaultPermissionsByRole', staleTime: 100_000, swr: true },
   })
 
   const { execute: executeGetPermissions, data: allPermissions } = getPermissionsList({
+    cache: { id: 'allPermissions', staleTime: 100_000, swr: true },
     onSuccess: () => {
       initPermissions(userData.value, allPermissions.value, userPermissions)
     },

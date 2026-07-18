@@ -1,4 +1,4 @@
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 
 const ADMIN_ACTION = 'admin'
 

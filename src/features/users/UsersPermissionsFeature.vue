@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { selectTypes } from '@/shared/types'
-import { PermsTypes } from '@/features/users/types'
 import { Table } from '@/shared/ui/table'
-import { VButton, VCheckbox, VSelect } from '@/shared/ui/common'
+import { VButton, VCheckbox } from '@/shared/ui/common'
+import { PermsTypes } from '@/shared/types'
 import { usePermissions, useSaveUserPermissions } from '@/features/users/composables'
-import { UserPanel } from '@/features/users/components'
+import { UserPanel, PermColumn } from '@/features/users/components'
 import {
   createPermissionColumns,
   getPermissionCheckboxValue,
@@ -75,17 +75,21 @@ const handleCheckboxChange = async (
 </script>
 
 <template>
-  <div class="perms-layout flex h-full flex-col overflow-hidden">
+  <div class="perms-layout flex h-full flex-col gap-4 overflow-y-auto">
     <UserPanel
       class="shrink-0"
       :loading="getUserLoading"
       :user="userData"
       :role="selectedRole"
+      :role-options="roleOptions"
       :permissions-summary="permissionsSummary"
+      @update:role="(option) => (selectedRole = option)"
+      @select="applyRolePermissions"
     />
 
-    <div class="flex shrink-0 flex-col overflow-x-auto overflow-y-auto rounded-2xl bg-secondaryBg border border-borderDefault">
+    <div class="rounded-2xl border border-borderDefault bg-secondaryBg p-6">
       <Table
+        class="!gap-0 !p-0"
         :columns="permissionColumns"
         :items="permissionRows"
         :loading="getUserLoading || getRolesPermissionsLoading"
@@ -93,52 +97,41 @@ const handleCheckboxChange = async (
         :scrollable="false"
       >
         <template #toolbar>
-          <div class="flex items-center justify-between px-3 pt-3 pb-3">
-            <span class="text-headingCard text-txtPrimary">Permission matrix</span>
-
-            <div class="flex items-center gap-4">
-              <VSelect
-                v-model="selectedRole"
-                @select="applyRolePermissions"
-                :options="roleOptions"
-                label="Role"
-              />
-
-              <VCheckbox
-                :model-value="allPerm"
-                @update:model-value="onAllPermUpdate"
-                label="All permissions"
-                variant="switch"
-                :disabled="isSelectAllDisabled()"
-              />
-
-              <VButton
-                @click="saveUserPermissions"
-                :disabled="patchPermissionsLoading || rolesLoading"
-                :loading="rolesLoading || patchPermissionsLoading"
-              >
-                Save
-              </VButton>
-            </div>
-          </div>
+          <span class="mb-4 block text-headingCard text-txtPrimary">Permission matrix</span>
         </template>
 
         <template #module="{ item }">
-          <span class="text-sm font-medium text-txtPrimary">
-            {{ item.module }}
-          </span>
+          <span class="text-sm font-medium text-txtPrimary"> {{ item.module }} </span>
         </template>
 
         <template v-for="action in permissionActions" #[action]="{ item }" :key="action">
-          <div class="flex h-full w-full items-center justify-center">
+          <PermColumn
+            :row="item"
+            :action="action"
+            :visible="isPermissionCheckboxVisible(item, action)"
+            :model-value="getCheckboxValue(item, action)"
+            :disabled="getCheckboxDisabled(item, action)"
+            @update:model-value="handleCheckboxChange(item, action, $event)"
+          />
+        </template>
+
+        <template #loadMore>
+          <div class="mt-4 flex w-full items-center justify-end gap-4">
             <VCheckbox
-              v-if="isPermissionCheckboxVisible(item, action)"
-              label=""
-              class="h-full w-full justify-center"
-              :model-value="getCheckboxValue(item, action)"
-              :disabled="getCheckboxDisabled(item, action)"
-              @update:model-value="handleCheckboxChange(item, action, $event)"
+              :model-value="allPerm"
+              @update:model-value="onAllPermUpdate"
+              label="All permissions"
+              variant="switch"
+              :disabled="isSelectAllDisabled()"
             />
+
+            <VButton
+              @click="saveUserPermissions"
+              :disabled="patchPermissionsLoading || rolesLoading"
+              :loading="rolesLoading || patchPermissionsLoading"
+            >
+              Save
+            </VButton>
           </div>
         </template>
       </Table>

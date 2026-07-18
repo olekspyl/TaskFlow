@@ -1,6 +1,7 @@
-import { useApi, useApiDelete, useApiPatch, type UseApiOptions } from '@ametie/vue-muza-use'
-import { UsersTypes, PermsTypes } from '@/features/users/types'
 import { toValue, type MaybeRefOrGetter } from 'vue'
+import { useApi, useApiDelete, useApiPatch, type UseApiOptions } from '@ametie/vue-muza-use'
+import { UsersTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 
 export default () => {
   const fetchUsers = (options?: UseApiOptions<UsersTypes.UsersResponse>) => {

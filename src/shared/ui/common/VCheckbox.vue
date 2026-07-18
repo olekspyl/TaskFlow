@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import VIcon from './VIcon.vue'
+import { VIcon } from '.'
 
 type Props = {
   label?: string
@@ -37,7 +37,8 @@ const emit = defineEmits<{
         class="relative block h-5 w-9 rounded-full transition-colors peer-focus-visible:shadow-focusRing peer-focus-visible:rounded-full"
         :class="[
           disabled ? 'bg-skeletonBg' : modelValue ? 'bg-primary' : 'bg-borderHover',
-          !disabled && (modelValue ? 'group-hover:bg-activePrimary' : 'group-hover:shadow-focusRing'),
+          !disabled &&
+            (modelValue ? 'group-hover:bg-activePrimary' : 'group-hover:shadow-focusRing'),
         ]"
       >
         <span
@@ -55,7 +56,10 @@ const emit = defineEmits<{
             : modelValue
               ? 'border-primary bg-primary text-white'
               : 'border-borderDefault bg-secondaryBg',
-          !disabled && (modelValue ? 'group-hover:border-activePrimary group-hover:bg-activePrimary' : 'group-hover:border-primary'),
+          !disabled &&
+            (modelValue
+              ? 'group-hover:border-activePrimary group-hover:bg-activePrimary'
+              : 'group-hover:border-primary'),
         ]"
       >
         <VIcon v-if="modelValue" icon="mdi:check-bold" :size="16" />

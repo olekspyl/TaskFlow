@@ -1,12 +1,3 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import routerModules from './routerModules'
-import { routesGuard } from './guard'
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routerModules,
-})
-
-router.beforeEach(routesGuard)
-
-export default router
+export { routesGuard } from './guard.ts'
+export { routerModules } from './routerModules.ts'
+export { router } from './router.ts'

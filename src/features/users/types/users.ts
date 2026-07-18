@@ -1,3 +1,5 @@
+import type { Roles } from '@/shared/types/permissions'
+
 export type User = {
   id: string
   email: string
@@ -24,10 +26,10 @@ export type UsersResponse = {
 }
 
 export type UserResponse = {
-  id: () => string
+  id: string
   email: string
   name: string
-  role: string
+  role: Roles
   permissions: string[]
   isAdmin: boolean
   createdAt: string

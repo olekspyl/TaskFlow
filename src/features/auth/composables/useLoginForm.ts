@@ -3,7 +3,7 @@ import useVuelidate from '@vuelidate/core'
 import { useRouter } from 'vue-router'
 import { helpers, required, email as emailValidator } from '@vuelidate/validators'
 import { tokenManager } from '@ametie/vue-muza-use'
-import useAuthRequests from '../api/useAuthRequests'
+import useAuthRequests from '../api/authApi'
 import type { LoginFormState } from '../types/auth'
 import { useUserStore } from '@/shared/stores'
 
@@ -15,7 +15,6 @@ export const useLoginForm = () => {
     email: '',
     password: '',
   })
-  // const serverError = ref('')
   const {
     execute: loginExecuter,
     loading,
@@ -30,7 +29,7 @@ export const useLoginForm = () => {
         refreshToken: response.data.refreshToken,
       })
       userStore.executeUser()
-      await router.push('/users')
+      await router.push('/')
     },
     // або error.message
     // onError: async (err) => {

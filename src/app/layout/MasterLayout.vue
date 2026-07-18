@@ -2,10 +2,9 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { routerTypes } from '@/shared/types'
-import DefaultLayout from './DefaultLayout.vue'
-import AuthLayout from './AuthLayout.vue'
 import { VLoader } from '@/shared/ui/common'
 import { useUserStore } from '@/shared/stores'
+import { DefaultLayout, AuthLayout } from '.'
 
 const route = useRoute()
 const userStore = useUserStore()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Toaster } from 'vue-sonner'
-import MasterLayout from './layout/MasterLayout.vue'
-import { useTheme } from '@/shared/composables'
+import { useTheme } from '@/features/theme'
+import { MasterLayout } from './layout'
 
 const { theme } = useTheme()
 </script>

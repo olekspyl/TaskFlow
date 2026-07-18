@@ -1,5 +1,4 @@
 import { useApiPost, type UseApiOptions } from '@ametie/vue-muza-use'
-
 import type {
   LoginRequest,
   LoginResponse,
@@ -21,5 +20,3 @@ export default () => {
     fetchRegisterUser,
   }
 }
-
-// абстракція на запити (шар апі)

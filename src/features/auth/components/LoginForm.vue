@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { VInput } from '@/shared/ui/common'
 import { useLoginForm } from '../composables/useLoginForm'
-import AuthCard from './AuthCard.vue'
+import { AuthCard } from '.'
 
 const { state, v$, onSubmit, loading, error } = useLoginForm()
-
-// fine case for mapping errors or for local errors
-// <template #error="{ error, text }" />
 </script>
 
 <template>

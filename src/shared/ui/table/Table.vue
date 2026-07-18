@@ -15,6 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
   scrollable: true,
 })
 
+
 const sort = defineModel<SortingOptions>('sort', {
   default: () => ({
     sortBy: 'createdAt',
@@ -80,8 +81,8 @@ const loadMore = () => {
 
     <div
       :class="[
-        'flex flex-col overflow-hidden rounded-xl border border-tableBorder bg-secondaryBg',
-        scrollable && 'flex-1 min-h-0',
+        'flex flex-col bg-secondaryBg',
+        scrollable ? 'overflow-hidden flex-1 min-h-0' : 'overflow-x-auto',
       ]"
     >
       <div
@@ -92,7 +93,7 @@ const loadMore = () => {
         <template v-for="column in props.columns" :key="`head-${column.key}`">
           <div
             :class="[
-              'sticky top-0 z-20 flex items-center justify-center text-center bg-elevated px-5 py-3 text-uiCaption font-semibold uppercase tracking-wide text-muted',
+              'sticky top-0 z-20 flex items-center justify-center text-center bg-elevated px-5 py-4 text-uiCaption font-semibold uppercase tracking-wide text-muted',
               column.separator && 'border-l-2 border-primary',
             ]"
           >

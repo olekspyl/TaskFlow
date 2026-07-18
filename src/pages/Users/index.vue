@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { UsersManager } from '@/widgets'
+import { UsersWidget } from '@/widgets'
 </script>
 
 <template>
-  <UsersManager />
+  <UsersWidget />
 </template>

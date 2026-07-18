@@ -1,9 +1,9 @@
+import type { Ref } from 'vue'
 import { useToast } from '@/shared/composables'
 import { getNormalizedRouteId } from '@/shared/utils'
-import { useUsersRequests } from '@/features/users/api'
+import { usersApi } from '@/features/users/api'
 import { formatPermissionsToArr } from '@/features/users/utils'
-import type { Ref } from 'vue'
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 
 type Params = {
   userPermissions: Ref<Record<string, boolean>>
@@ -13,7 +13,7 @@ type Params = {
 
 export const useSaveUserPermissions = ({ userPermissions, selectedRole, baseRole }: Params) => {
   const { showSuccess } = useToast()
-  const { patchUserPermissions, patchUserRole } = useUsersRequests()
+  const { patchUserPermissions, patchUserRole } = usersApi()
 
   const { loading: patchPermissionsLoading, execute: executePatchPermissions } =
     patchUserPermissions(getNormalizedRouteId(), {

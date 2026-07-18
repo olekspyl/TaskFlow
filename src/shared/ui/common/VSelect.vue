@@ -43,7 +43,7 @@ const emit = defineEmits<{
     <Multiselect
       v-model="model"
       class="role-select"
-      track-by="value"
+      track-by="label"
       label="label"
       :options="options"
       :searchable="searchable"

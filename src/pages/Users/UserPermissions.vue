@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { UsersPermissionsFeature } from '@/features/users'
+import { UserPermissionsWidget } from '@/widgets'
 </script>
 
 <template>
   <div class="h-full">
-    <UsersPermissionsFeature />
+    <UserPermissionsWidget />
   </div>
 </template>

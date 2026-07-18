@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import VIcon from './VIcon.vue'
+import { VIcon } from '.'
 
 type Props = {
   to?: string
   type?: 'submit' | 'button' | 'reset'
   iconRight?: string
+  iconLeft?: string
   icon?: string
   text?: string
   disabled?: boolean
@@ -18,6 +19,7 @@ const {
   to,
   type,
   iconRight,
+  iconLeft,
   icon,
   text,
   loading,
@@ -59,6 +61,9 @@ const handleClick = (e: Event) => {
     :class="[variant, { 'is-disabled': disabled }]"
     @click="handleClick"
   >
+    <slot name="iconLeft">
+      <VIcon v-if="iconLeft" :icon="iconLeft" class="text-primary" />
+    </slot>
     <slot>
       <span class="py-3">
         {{ text }}

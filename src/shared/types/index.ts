@@ -1,4 +1,7 @@
 export * as routerTypes from './router'
-export * as userTypes from './user'
+export * as userTypes from './me'
 export * as selectTypes from './select'
 export * as usersType from '../../features/users/types/users'
+export * as NavigationTypes from './navigation'
+export * as MeTypes from './me'
+export * as PermsTypes from './permissions'

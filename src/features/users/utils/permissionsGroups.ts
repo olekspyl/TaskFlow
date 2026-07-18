@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 
 const { PermissionsSetTitle } = PermsTypes
 

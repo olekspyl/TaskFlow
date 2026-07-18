@@ -1,27 +1,45 @@
+import type { RouteLocationNormalized, RouteLocationRaw } from 'vue-router'
+
+import { navItems } from '@/shared/constants'
+import { useHeaderParts } from '@/app/composables/useHeaderParts'
 import { useUserStore } from '@/shared/stores'
-import { tokenManager } from '@ametie/vue-muza-use'
-import type { RouteLocationNormalized } from 'vue-router'
-import { routerTypes } from '@/shared/types'
+
+import { authorizeRoute, checkRouteAccess, getFirstAvailableRoute, setupRouteHeader } from './utils'
 
 export const routesGuard = async (
   to: RouteLocationNormalized,
-): Promise<{ name: string } | void> => {
+): Promise<RouteLocationRaw | void> => {
   const userStore = useUserStore()
-  const token = tokenManager.getAccessToken()
+  const header = useHeaderParts()
 
-  const isLoginRoute = to.name === routerTypes.RouteNames.LOGIN
+  const authRedirect = await authorizeRoute({
+    to,
+    initAuth: userStore.initAuth,
+    resetHeader: header.reset,
+    getFirstAvailableRouteName: () =>
+      getFirstAvailableRoute({
+        navItems,
+        isAdmin: userStore.role === 'admin',
+        canRead: userStore.canRead,
+      }),
+  })
 
-  if (!token) {
-    if (!isLoginRoute) {
-      return { name: routerTypes.RouteNames.LOGIN }
-    }
-
-    return
+  if (authRedirect) {
+    return authRedirect
   }
 
-  await userStore.initAuth()
+  const accessRedirect = checkRouteAccess({
+    to,
+    canRead: userStore.canRead,
+  })
 
-  if (isLoginRoute) {
-    return { name: routerTypes.RouteNames.DASHBOARD }
+  if (accessRedirect) {
+    return accessRedirect
   }
+
+  setupRouteHeader({
+    to,
+    reset: header.reset,
+    setVisible: header.setVisible,
+  })
 }

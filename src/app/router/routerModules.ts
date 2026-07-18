@@ -1,43 +1,128 @@
-import { Auth, Dashboard, NotFound, Users, UserPermissions } from '@/pages'
+import type { RouteMeta, RouteRecordRaw } from 'vue-router'
+
+import {
+  Auth,
+  Analytics,
+  Dashboard,
+  List,
+  Lists,
+  NotFound,
+  Profile,
+  UserPermissions,
+  Users,
+} from '@/pages'
+
+import { HEADER_COMPONENTS, HEADER_PARTS } from '@/app/constants/header'
+
 import { routerTypes } from '@/shared/types'
-import type { RouteRecordRaw, RouteMeta } from 'vue-router'
+
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'children'> {
   meta?: RouteMeta
   children?: AppRouteRecordRaw[]
 }
 
-const routerModules: Array<AppRouteRecordRaw> = [
+const modules: AppRouteRecordRaw[] = [
   {
     path: '/',
     name: routerTypes.RouteNames.ROOT,
+    redirect: '/dashboard',
   },
+
   {
     path: '/dashboard',
     name: routerTypes.RouteNames.DASHBOARD,
     component: Dashboard,
   },
+
   {
     path: '/users',
     name: routerTypes.RouteNames.USERS,
     component: Users,
+    meta: {
+      header: {
+        title: 'header.users',
+      },
+    },
   },
+
   {
     path: '/users/:id',
     name: routerTypes.RouteNames.USER_DETAILS,
     component: UserPermissions,
+    meta: {
+      header: {
+        title: 'header.userDetails',
+      },
+    },
   },
+
+  {
+    path: '/lists',
+    name: routerTypes.RouteNames.LISTS,
+    component: Lists,
+    meta: {
+      permission: 'read:list',
+      header: {
+        title: 'header.lists',
+        showExtra: [HEADER_PARTS.ACTIONS],
+      },
+    },
+  },
+
+  {
+    path: '/lists/:id',
+    name: routerTypes.RouteNames.LIST_DETAILS,
+    component: List,
+    meta: {
+      header: {
+        title: 'header.listDetails',
+      },
+    },
+  },
+
+  {
+    path: '/analytics',
+    name: routerTypes.RouteNames.ANALYTICS,
+    component: Analytics,
+    meta: {
+      permission: 'read:analytics',
+      header: {
+        title: 'header.analytics',
+        showExtra: [HEADER_PARTS.PERIOD],
+      },
+    },
+  },
+
+  {
+    path: '/profile',
+    name: routerTypes.RouteNames.PROFILE,
+    component: Profile,
+    meta: {
+      header: {
+        title: 'header.profile',
+      },
+    },
+  },
+
   {
     path: '/auth',
     name: routerTypes.RouteNames.LOGIN,
     component: Auth,
-    meta: { layout: routerTypes.RouteLayouts.AUTH },
+    meta: {
+      layout: routerTypes.RouteLayouts.AUTH,
+    },
   },
+
   {
     path: '/:pathMatch(.*)*',
     name: routerTypes.RouteNames.NOT_FOUND,
     component: NotFound,
-    meta: { title: 'Not Found' },
+    meta: {
+      header: {
+        title: 'header.notFound',
+      },
+    },
   },
 ]
 
-export default routerModules as Array<RouteRecordRaw>
+export const routerModules = modules as RouteRecordRaw[]

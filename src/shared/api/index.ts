@@ -1,1 +1,1 @@
-export { authApi } from './auth'
+export { default as useAuthUser } from './userSessionApi'

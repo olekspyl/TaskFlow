@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
-import { useTheme } from '@/shared/composables'
+import { useTheme } from '.'
 
 const { isDark } = useTheme()
 </script>
