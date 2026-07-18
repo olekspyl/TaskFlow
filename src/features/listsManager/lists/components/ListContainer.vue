@@ -124,7 +124,7 @@ const actions = computed(() => [
 
 <template>
   <div
-    class="group flex flex-col gap-3 rounded-2xl border p-4 transition-shadow duration-150 ease-out hover:shadow-[0_4px_12px_rgba(15,23,42,0.08)]"
+    class="flex flex-col gap-3 rounded-2xl border p-4 transition-shadow duration-150 ease-out hover:shadow-soft"
     :style="cardStyle"
   >
     <div class="flex items-start justify-between gap-2">
