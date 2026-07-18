@@ -46,6 +46,21 @@ const deleteOptions = computed(() => ({
   },
 }))
 
+const cardStyle = computed(() => ({
+  backgroundColor: `${props.list.hexColor}14`,
+  borderColor: `${props.list.hexColor}2E`,
+}))
+
+const progressStyle = computed(() => {
+  const total = props.list.totalTasks
+  const percent = total > 0 ? Math.round((props.list.completedTasks / total) * 100) : 0
+
+  return {
+    width: `${percent}%`,
+    backgroundColor: props.list.hexColor,
+  }
+})
+
 const { loading: listDetailsLoading, execute: getListDetails } = getListById(
   () => activeListId.value,
   {
@@ -108,22 +123,33 @@ const actions = computed(() => [
 </script>
 
 <template>
-  <div class="flex w-[300px] gap-10">
-    <div class="h-4 w-4 rounded-xl" :style="{ backgroundColor: list.hexColor }" />
+  <div
+    class="flex flex-col gap-3 rounded-2xl border p-4 transition-shadow duration-150 ease-out hover:shadow-soft"
+    :style="cardStyle"
+  >
+    <div class="flex items-start justify-between gap-2">
+      <button
+        type="button"
+        :disabled="listDetailsLoading"
+        class="truncate text-left text-bodyEmphasis text-txtPrimary transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
+        @click="handleOpenList"
+      >
+        {{ list.title }}
+      </button>
 
-    <button type="button" :disabled="listDetailsLoading" @click="handleOpenList">
-      {{ list.title }}
-    </button>
-
-    <div>
-      {{ list.totalTasks }}
+      <ActionMenu :actions="actions" />
     </div>
 
     <div>
-      {{ list.completedTasks }}
-    </div>
+      <p class="text-headingCard text-txtPrimary">
+        {{ list.completedTasks
+        }}<span class="text-bodyM font-normal text-muted"> / {{ list.totalTasks }}</span>
+      </p>
 
-    <ActionMenu :actions="actions" />
+      <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-secondaryBg/60">
+        <div class="h-full rounded-full transition-[width] duration-200 ease-out" :style="progressStyle" />
+      </div>
+    </div>
   </div>
 
   <EditListModal

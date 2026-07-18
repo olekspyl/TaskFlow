@@ -36,7 +36,7 @@ function closeCreateModal(): void {
       @click="openCreateModal"
     />
   </Teleport>
-  <div>
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
     <ListContainer
       v-for="list in lists"
       :key="list.id"

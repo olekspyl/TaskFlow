@@ -31,12 +31,21 @@ const selectTag = (tag: TagItem) => {
 </script>
 
 <template>
-  <div>
-    <div class="cursor-pointer">
-      <button type="button" v-for="tag in tags" @click="selectTag(tag)" :key="tag.id">
-        {{ tag.label }}
-      </button>
-    </div>
+  <div class="inline-flex rounded-full bg-elevated p-1">
+    <button
+      v-for="tag in tags"
+      :key="tag.id"
+      type="button"
+      class="rounded-full px-4 py-1.5 text-uiLabel transition-colors duration-150 ease-out"
+      :class="
+        activeTag === tag.id
+          ? 'bg-secondaryBg text-txtPrimary shadow-soft'
+          : 'text-muted hover:text-txtPrimary'
+      "
+      @click="selectTag(tag)"
+    >
+      {{ tag.label }}
+    </button>
   </div>
 </template>
 

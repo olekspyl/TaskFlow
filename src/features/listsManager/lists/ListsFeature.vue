@@ -63,19 +63,24 @@ const tags: Array<{
 
 <template>
   <div>
-    <VSegmentControl
-      v-if="canViewUsersLists"
-      v-model="activeTag"
-      :tags="tags"
-      @change-segment="handleSegmentChange"
-    />
+    <div
+      class="mb-6 flex flex-col gap-4 rounded-2xl border border-borderDefault bg-secondaryBg p-4 shadow-soft sm:flex-row sm:items-center"
+    >
+      <VSegmentControl
+        v-if="canViewUsersLists"
+        v-model="activeTag"
+        :tags="tags"
+        @change-segment="handleSegmentChange"
+      />
 
-    <Filters
-      v-model:sorting="sorting"
-      v-model:filtering="filtering"
-      :action="handleResetFilters"
-      @change="handleFiltersChange"
-    />
+      <Filters
+        v-model:sorting="sorting"
+        v-model:filtering="filtering"
+        :action="handleResetFilters"
+        class="sm:ml-auto"
+        @change="handleFiltersChange"
+      />
+    </div>
 
     <template v-if="isUsersListsAllowedToAccess">
       <VLoader v-if="usersListsLoading" size="section" />
