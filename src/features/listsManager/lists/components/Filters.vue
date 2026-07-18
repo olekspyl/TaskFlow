@@ -28,8 +28,8 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="flex items-center gap-6">
-    <div class="h-12 w-[320px]">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
+    <div class="h-12 w-full sm:w-72">
       <VInput
         v-model="filtering"
         type="search"
