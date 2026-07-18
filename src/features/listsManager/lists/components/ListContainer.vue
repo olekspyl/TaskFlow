@@ -47,8 +47,8 @@ const deleteOptions = computed(() => ({
 }))
 
 const cardStyle = computed(() => ({
-  backgroundColor: `${props.list.hexColor}14`,
-  borderColor: `${props.list.hexColor}2E`,
+  backgroundColor: `${props.list.hexColor}24`,
+  borderColor: `${props.list.hexColor}47`,
 }))
 
 const progressStyle = computed(() => {
@@ -131,13 +131,15 @@ const actions = computed(() => [
       <button
         type="button"
         :disabled="listDetailsLoading"
-        class="truncate text-left text-bodyEmphasis text-txtPrimary transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
+        class="flex-1 min-w-0 whitespace-normal break-words text-left text-bodyEmphasis text-txtPrimary transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
         @click="handleOpenList"
       >
         {{ list.title }}
       </button>
 
-      <ActionMenu :actions="actions" />
+      <div class="shrink-0">
+        <ActionMenu :actions="actions" />
+      </div>
     </div>
 
     <div>
