@@ -1,5 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Dashboard } from '@/widgets'
+</script>
 
 <template>
-  <div>dashboard</div>
+  <Dashboard />
 </template>

@@ -1,2 +1,5 @@
 export { default as ActionItem } from './ActionItem.vue'
 export { default as UserPanel } from './UserPanel.vue'
+export { default as PermCell } from './PermCell.vue'
+export { default as PermRow } from './PermRow.vue'
+export { default as PermColumn } from './PermColumn.vue'

@@ -11,9 +11,9 @@ import { TableTypes } from '@/shared/ui/table'
 import { Table, ActionMenu } from '@/shared/ui/table'
 import { VInput, VDate, VTitle, VSelect } from '@/shared/ui/common'
 import { cleanEmptyKeys } from '@/shared/utils'
-import { useUsersRequests } from '@/features/users/api'
+import { usersApi } from '@/features/users/api'
 
-const { fetchUsers, fetchUserById, deleteUserById } = useUsersRequests()
+const { fetchUsers, fetchUserById, deleteUserById } = usersApi()
 const router = useRouter()
 
 const roleOptions: selectTypes.Option[] = [

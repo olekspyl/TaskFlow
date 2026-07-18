@@ -1,6 +1,6 @@
 import { reactive, computed, ref } from 'vue'
-import useVuelidate from '@vuelidate/core'
 import { useRouter } from 'vue-router'
+import useVuelidate from '@vuelidate/core'
 import {
   helpers,
   required,
@@ -8,7 +8,7 @@ import {
   minLength,
   sameAs,
 } from '@vuelidate/validators'
-import useAuthRequests from '../api/useAuthRequests'
+import { authApi } from '../api'
 import type { SignupFormState } from '../types/auth'
 import { useToast } from '@/shared/composables'
 
@@ -24,7 +24,7 @@ export const useSignupForm = () => {
 
   const serverErrors = ref<Record<string, string[]>>({})
 
-  const { fetchRegisterUser } = useAuthRequests()
+  const { fetchRegisterUser } = authApi()
   const {
     loading,
     error,
@@ -41,7 +41,6 @@ export const useSignupForm = () => {
     },
   })
 
-  // store, composable>ref > computed > fn
   const rules = computed(() => ({
     fullname: {
       required: helpers.withMessage('Full name is required', required),

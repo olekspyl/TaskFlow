@@ -1,54 +1,38 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { routerTypes } from '@/shared/types'
-import VIcon from '@/shared/ui/common/VIcon.vue'
-
-type Item = {
-  img: string
-  title?: string
-  to?: routerTypes.RouteNames
-}
+import { NavigationTypes } from '@/shared/types'
+import { VIcon } from '@/shared/ui/common'
+import { navItems } from '@/shared/constants'
+import { useUserStore } from '@/shared/stores'
 
 type Props = {
-  items?: Item | Item[]
+  items?: NavigationTypes.NavItem | NavigationTypes.NavItem[]
   do?: 'action' | 'navigation'
-  onClick?: (item: Item) => void
+  onClick?: (item: NavigationTypes.NavItem) => void
 }
 
+// sidebar do dummy - get the array., make util for creating that arr
 const props = withDefaults(defineProps<Props>(), {
   do: 'navigation',
 })
 
-enum Navigation {
-  DASHBOARD = 'Dashboard',
-  LOGIN = 'Login',
-}
+const userStore = useUserStore()
 
-// move to parent layout, it must be shared
-const navItems: Item[] = [
-  {
-    title: Navigation.DASHBOARD,
-    img: 'lucide:home',
-    to: routerTypes.RouteNames.DASHBOARD,
-  },
-  {
-    title: Navigation.LOGIN,
-    img: 'lucide:log-in',
-    to: routerTypes.RouteNames.LOGIN,
-  },
-]
+const itemsArr = computed<NavigationTypes.NavItem[]>(() => {
+  const items = props.items ? (Array.isArray(props.items) ? props.items : [props.items]) : navItems
 
-const itemsArr = computed<Item[]>(() => {
-  if (!props.items) return navItems
-  return Array.isArray(props.items) ? props.items : [props.items]
+  return items.filter((item) => {
+    if (item.adminOnly && userStore.role !== 'admin') return false
+    return !item.permission || userStore.canRead(item.permission)
+  })
 })
 
 const componentTag = computed(() => {
   return props.do === 'action' ? 'button' : RouterLink
 })
 
-const getComponentProps = (item: Item) => {
+const getComponentProps = (item: NavigationTypes.NavItem) => {
   if (props.do === 'action') {
     return {
       type: 'button' as const,
@@ -59,7 +43,7 @@ const getComponentProps = (item: Item) => {
   }
 }
 
-const handleClick = (item: Item) => {
+const handleClick = (item: NavigationTypes.NavItem) => {
   if (props.do === 'action') {
     props.onClick?.(item)
   }

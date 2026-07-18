@@ -1,7 +1,11 @@
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 import { selectTypes } from '@/shared/types'
 
-export const createPermissionColumns = (actions: string[]) => [
+const formatPermissionActionLabel = (action: PermsTypes.PermissionAction) => {
+  return action.charAt(0).toUpperCase() + action.slice(1)
+}
+
+export const createPermissionColumns = (actions: PermsTypes.PermissionAction[]) => [
   {
     key: 'module',
     label: 'Module',
@@ -9,7 +13,7 @@ export const createPermissionColumns = (actions: string[]) => [
   },
   ...actions.map((action) => ({
     key: action,
-    label: action.charAt(0).toUpperCase() + action.slice(1),
+    label: formatPermissionActionLabel(action),
     width: '120px',
     separator: action === 'admin',
   })),

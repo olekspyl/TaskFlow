@@ -1,21 +1,54 @@
-import { defineStore } from 'pinia'
-import { computed } from 'vue'
-import { tokenManager } from '@ametie/vue-muza-use'
-import useUserRequest from '../api/useUserRequest'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { defineStore } from 'pinia'
+import { tokenManager } from '@ametie/vue-muza-use'
+import { useAuthUser } from '@/shared/api'
+import { PermsTypes } from '@/shared/types'
+import { routerTypes } from '../types'
 
 export const useUserStore = defineStore('user', () => {
-  const { fetchLogoutUser, fetchUserMe } = useUserRequest()
+  const { fetchLogoutUser, fetchUserMe } = useAuthUser()
   const router = useRouter()
 
   const isAuthenticated = computed(() => !!userState.value)
+  const role = ref<PermsTypes.Roles>()
+  const perms = ref<string[]>([])
+  const userName = ref('')
+
+  const initialRouteName = computed(() => {
+    if (role.value === 'admin') {
+      return routerTypes.RouteNames.USERS
+    }
+    // може бути 0 пермішінв, пернести
+    const firstReadPerm = perms.value.find((perm) => perm.startsWith('read:'))
+    const page = firstReadPerm?.split(':')[1]
+
+    const routesByPerm: Record<string, routerTypes.RouteNames> = {
+      list: routerTypes.RouteNames.LISTS,
+      dashboard: routerTypes.RouteNames.DASHBOARD,
+      analytics: routerTypes.RouteNames.ANALYTICS,
+    }
+
+    return routesByPerm[page || ''] || routerTypes.RouteNames.PROFILE
+  })
+
+  const canRead = (permission: string) => {
+    if (role.value === 'admin') return true
+    return perms.value?.includes(permission) ?? false
+  }
 
   const {
     error: fetchUserError,
     loading: fetchUserLoading,
     execute: executeUser,
     data: userState,
-  } = fetchUserMe()
+  } = fetchUserMe({
+    onSuccess: () => {
+      role.value = userState.value?.role
+      perms.value = userState.value?.permissions
+      userName.value = userState.value?.name
+    },
+  })
 
   const {
     error: logoutError,
@@ -33,7 +66,9 @@ export const useUserStore = defineStore('user', () => {
   })
 
   async function initAuth() {
-    if (!isAuthenticated) executeUser()
+    if (!isAuthenticated.value) {
+      await executeUser()
+    }
   }
 
   function clearUser() {
@@ -52,6 +87,11 @@ export const useUserStore = defineStore('user', () => {
     logoutError,
     logoutLoading,
     isAuthenticated,
+    role,
+    perms,
+    userName,
+    initialRouteName,
+    canRead,
     initAuth,
     clearUser,
     logout,

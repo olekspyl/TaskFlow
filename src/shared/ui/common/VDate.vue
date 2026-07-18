@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatDate } from '@/shared/utils/formatDate'
+import { formatDate } from '@/shared/utils'
 
 type Props = {
   date?: string | Date | null

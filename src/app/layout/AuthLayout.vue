@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import ThemeToggle from '@/shared/ui/ThemeToggle.vue'
-import AuthBackground from '@/features/auth/components/AuthBackground.vue'
+import { ThemeToggle } from '@/features/theme'
+import { AuthBackground } from '@/features/auth/components'
 </script>
 
 <template>

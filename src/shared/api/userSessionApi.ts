@@ -1,12 +1,11 @@
 import { useApiPost, useApi, type UseApiOptions } from '@ametie/vue-muza-use'
+import { MeTypes } from '@/shared/types'
 
-import type { MeResponse } from '../types/user'
 export default () => {
-  const fetchUserMe = (options?: UseApiOptions<MeResponse>) => {
+  const fetchUserMe = (options?: UseApiOptions<MeTypes.Response>) => {
     return useApi('/me', options)
   }
 
-  // types - deafault response type
   const fetchLogoutUser = (options?: UseApiOptions) => {
     return useApiPost('/auth/logout', options)
   }
@@ -16,5 +15,3 @@ export default () => {
     fetchLogoutUser,
   }
 }
-
-// абстракція на запити (шар апі)

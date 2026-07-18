@@ -1,4 +1,4 @@
-import { PermsTypes } from '@/features/users/types'
+import { PermsTypes } from '@/shared/types'
 
 export const setPermissionsValue = (
   currentPermissions: Record<string, boolean>,

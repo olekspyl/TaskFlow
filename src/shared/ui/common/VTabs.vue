@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, useAttrs, watch, type ClassValue } from 'vue'
+import { computed, ref, useAttrs, type ClassValue } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
@@ -18,11 +18,24 @@ type Props = {
   tabSelectionMode?: 'auto' | 'controlled'
   useHash?: boolean
   defaultTab: string
+  ariaLabel?: string
+  tabListClass?: ClassValue
+  tabItemClass?: ClassValue
+  activeTabItemClass?: ClassValue
 }
 
-const { tabs, tabSelectionMode = 'auto', useHash = true, defaultTab } = defineProps<Props>()
+const {
+  tabs,
+  tabSelectionMode = 'auto',
+  useHash = true,
+  defaultTab,
+  ariaLabel = 'Tabs',
+  tabListClass,
+  tabItemClass,
+  activeTabItemClass,
+} = defineProps<Props>()
 
-const activeTabId = ref(route.hash || defaultTab)
+const activeTabId = ref(route.hash ? route.hash.slice(1) : defaultTab)
 const activeTabComponent = computed(() => tabs.find((t) => t.id === activeTabId.value) ?? tabs[0])
 
 const rootClass = computed(() => attrs.class as ClassValue | undefined)
@@ -55,19 +68,25 @@ defineExpose({
 
 <template>
   <div>
-    <div role="tablist" aria-label="Tabs" class="mb-8 flex justify-center" :class="rootClass">
+    <div
+      role="tablist"
+      :aria-label="ariaLabel"
+      :class="tabListClass ?? ['mb-8 flex justify-center', rootClass]"
+    >
       <button
         v-for="tab in tabs"
         :key="tab.id"
         :id="`tab-${tab.id}`"
         type="button"
         @click="onTabClick(tab.id)"
-        :class="{ active: isActive(tab.id) }"
         role="tab"
         :aria-selected="isActive(tab.id)"
         :aria-controls="`panel-${tab.id}`"
         :tabindex="isActive(tab.id) ? 0 : -1"
-        class="text-txtPrimaryDark px-6 py-2 relative"
+        :class="[
+          tabItemClass ?? 'text-txtPrimaryDark px-6 py-2 relative',
+          isActive(tab.id) && (activeTabItemClass ?? 'active'),
+        ]"
       >
         {{ tab.label }}
       </button>

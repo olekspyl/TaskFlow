@@ -3,8 +3,12 @@ export enum RouteNames {
   DASHBOARD = 'Dashboard',
   LOGIN = 'Login',
   NOT_FOUND = 'NotFound',
-  USERS = 'Users',
+  USERS = 'Admin Panel',
   USER_DETAILS = 'User details',
+  LISTS = 'Lists',
+  ANALYTICS = 'Analytics',
+  PROFILE = 'Profile',
+  LIST_DETAILS = 'List Detail',
 }
 
 export enum RouteLayouts {

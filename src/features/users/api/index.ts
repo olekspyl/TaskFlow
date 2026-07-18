@@ -1,1 +1,1 @@
-export { default as useUsersRequests } from './useUsersRequests.ts'
+export { default as usersApi } from './usersApi.ts'

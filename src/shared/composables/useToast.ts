@@ -12,9 +12,9 @@ const classes = {
     closeButton: `${BASE}__close`,
   },
   success: { toast: `${BASE} ${BASE}--success` },
-  error:   { toast: `${BASE} ${BASE}--error` },
+  error: { toast: `${BASE} ${BASE}--error` },
   warning: { toast: `${BASE} ${BASE}--warning` },
-  info:    { toast: `${BASE} ${BASE}--info` },
+  info: { toast: `${BASE} ${BASE}--info` },
   loading: { toast: `${BASE} ${BASE}--loading` },
 }
 
@@ -23,8 +23,11 @@ const opts = { unstyled: true, closeButton: true }
 export const useToast = () => {
   const normalizeStatusMessage = (error: ApiStatusType): string => {
     if (typeof error === 'string') return error
-    if (Array.isArray(error))
+
+    if (Array.isArray(error)) {
       return error.map((item) => (typeof item === 'string' ? item : item.message)).join(', ')
+    }
+
     return error.message
   }
 

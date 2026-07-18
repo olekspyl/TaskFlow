@@ -1,7 +1,9 @@
-export type MeResponse = {
+import * as PermsTypes from './permissions'
+
+export type Response = {
   email: string
   name: string
-  role: string
+  role: PermsTypes.Roles
   permissions: string[]
   isAdmin: boolean
   createdAt: string
