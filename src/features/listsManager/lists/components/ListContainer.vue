@@ -6,10 +6,11 @@ import { router } from '@/app/router'
 import { useToast, useModal } from '@/shared/composables'
 import { modalTypes } from '@/shared/types'
 import { ActionMenu } from '@/shared/ui/table'
-import { VConfirmModal } from '@/shared/ui/common'
+import { VConfirmModal, VDate } from '@/shared/ui/common'
 import { listsApi } from '../api'
 import EditListModal from './EditListModal.vue'
 import { useListsQuery } from '../stores/useListsQuery'
+import { getListPercent, getListUrgency } from '../utils'
 import { type ListItem, ListActions, type ListSegment } from '../types/lists'
 
 type Props = {
@@ -29,19 +30,13 @@ const { myListsCacheKey, usersListsCacheKey } = storeToRefs(listsQuery)
 const activeListId = ref<string | null>(null)
 const isEditModalOpen = ref(false)
 
-const cardStyle = computed(() => ({
-  backgroundColor: `${props.list.hexColor}24`,
-  borderColor: `${props.list.hexColor}47`,
-}))
+const percent = computed(() => getListPercent(props.list))
+const urgency = computed(() => getListUrgency(props.list))
 
-const progressStyle = computed(() => {
-  const total = props.list.totalTasks
-  const percent = total > 0 ? Math.round((props.list.completedTasks / total) * 100) : 0
-
-  return {
-    width: `${percent}%`,
-    backgroundColor: props.list.hexColor,
-  }
+const deadlineClass = computed(() => {
+  if (urgency.value === 'overdue') return 'text-dangerous'
+  if (urgency.value === 'soon') return 'text-warning'
+  return 'text-muted'
 })
 
 const { loading: listDetailsLoading, execute: getListDetails } = getListById(
@@ -118,36 +113,40 @@ const actions = computed(() => [
 
 <template>
   <div
-    class="flex flex-col gap-2 rounded-xl border p-3 transition-[transform,box-shadow] duration-150 ease-out hover:scale-[1.02] hover:shadow-soft"
-    :style="cardStyle"
+    class="flex items-center gap-4 rounded-xl bg-listCardBg px-4 py-3 shadow-soft transition-[transform,box-shadow] duration-150 ease-out hover:-translate-y-0.5 hover:shadow-taught"
   >
-    <div class="flex items-start justify-between gap-2">
+    <span
+      class="mt-0.5 h-2.5 w-2.5 shrink-0 self-start rounded-full"
+      :style="{ backgroundColor: list.hexColor }"
+    />
+
+    <div class="min-w-0 flex-1">
       <button
         type="button"
         :disabled="listDetailsLoading"
-        class="flex-1 min-w-0 whitespace-normal break-words text-left text-headingCard text-txtPrimary transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
+        class="block max-w-full truncate text-left text-headingCard text-txtPrimary transition-colors hover:text-primary disabled:cursor-not-allowed disabled:opacity-60"
         @click="handleOpenList"
       >
         {{ list.title }}
       </button>
 
-      <div class="shrink-0">
-        <ActionMenu :actions="actions" />
+      <div class="flex flex-wrap items-center gap-x-1.5 text-uiCaption text-muted">
+        <span v-if="list.deadline" :class="deadlineClass">
+          <VDate :date="list.deadline" date-format="dd MMM" />
+        </span>
+        <span v-if="list.deadline">•</span>
+        <span>{{ list.completedTasks }}/{{ list.totalTasks }} {{ t('lists.card.tasksLabel') }}</span>
+        <template v-if="collection === 'usersLists'">
+          <span>•</span>
+          <span>{{ list.owner.name }}</span>
+        </template>
       </div>
     </div>
 
-    <div>
-      <p class="text-bodyEmphasis text-txtPrimary">
-        {{ list.completedTasks
-        }}<span class="text-bodyM font-normal text-muted"> / {{ list.totalTasks }}</span>
-      </p>
+    <span class="hidden shrink-0 text-bodyEmphasis text-txtPrimary sm:block">{{ percent }}%</span>
 
-      <div class="mt-1.5 h-1 overflow-hidden rounded-full bg-secondaryBg/60">
-        <div
-          class="h-full rounded-full transition-[width] duration-200 ease-out"
-          :style="progressStyle"
-        />
-      </div>
+    <div class="shrink-0">
+      <ActionMenu :actions="actions" />
     </div>
   </div>
 

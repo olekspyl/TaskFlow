@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ListContainer, CreateListModal } from '.'
+import { ListsGrouped, CreateListModal } from '.'
 import { VButton } from '@/shared/ui/common'
 import type { ListItem } from '../types/lists'
 
@@ -34,14 +34,7 @@ const closeCreateModal = () => {
       @click="openCreateModal"
     />
   </Teleport>
-  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-    <ListContainer
-      v-for="list in lists"
-      :key="list.id"
-      :list="list"
-      collection="myLists"
-    />
-  </div>
+  <ListsGrouped :lists="lists" collection="myLists" />
   <CreateListModal v-if="isCreateModalOpen" @close="closeCreateModal" />
 </template>
 

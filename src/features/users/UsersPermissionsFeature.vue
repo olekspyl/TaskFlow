@@ -106,7 +106,7 @@ const handleCheckboxChange = async (
       @select="applyRolePermissions"
     />
 
-    <div class="rounded-2xl border border-borderDefault bg-secondaryBg p-6">
+    <div class="rounded-2xl bg-listCardBg p-6 shadow-soft">
       <Table
         class="!gap-0 !p-0"
         :columns="permissionColumns"

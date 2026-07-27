@@ -33,7 +33,7 @@ const hasTitle = computed(() => !!title || !!slots.title)
 }
 
 .containerBase.default {
-  @apply border border-toggle p-4;
+  @apply p-4 shadow-soft;
 }
 
 .containerBase.plain {

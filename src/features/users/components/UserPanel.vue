@@ -45,7 +45,7 @@ onBeforeUnmount(() => document.removeEventListener('click', closeRoleMenu))
 
 <template>
   <div
-    class="flex w-full items-center justify-between gap-4 rounded-2xl bg-secondaryBg border border-borderDefault py-3 px-4"
+    class="flex w-full items-center justify-between gap-4 rounded-2xl bg-listCardBg py-3 px-4 shadow-soft"
   >
     <div class="flex items-center gap-4">
       <VSkeleton v-if="loading" width="36px" height="36px" rounded="50%" />

@@ -20,7 +20,9 @@ const emit = defineEmits<{
   <div class="relative">
     <form class="flex flex-col gap-6 w-full" @submit.prevent="emit('submit')">
       <slot name="title">
-        <h1 class="text-txtPrimaryDark text-authTitle inline-flex text-center justify-center">
+        <h1
+          class="text-txtPrimaryDark text-dataMetric inline-flex w-full justify-center whitespace-nowrap text-center"
+        >
           {{ title }}
         </h1>
       </slot>

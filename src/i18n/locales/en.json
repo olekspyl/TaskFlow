@@ -24,7 +24,10 @@
     "lists": "Manage all your task groups in one place",
     "analytics": "See how your tasks are progressing over time",
     "notFound": "Not Found",
-    "actionsAriaLabel": "Header actions"
+    "actionsAriaLabel": "Header actions",
+    "profile": "Manage your personal account details",
+    "users": "Manage roles and permissions for every user",
+    "userDetails": "Review and adjust this user's permissions"
   },
   "notFound": {
     "message": "Page is not exist, please, return to home",
@@ -94,6 +97,14 @@
     "filters": {
       "searchPlaceholder": "Search",
       "sortByLabel": "Sort by"
+    },
+    "card": {
+      "tasksLabel": "tasks"
+    },
+    "groups": {
+      "overdue": "Overdue",
+      "soon": "Due soon",
+      "rest": "Other"
     },
     "sorting": {
       "recentlyUpdated": "Recently updated",

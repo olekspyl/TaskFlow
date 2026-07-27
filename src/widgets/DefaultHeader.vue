@@ -35,7 +35,7 @@ const title = computed(() => {
 <template>
   <header
     v-if="hasVisibleParts"
-    class="mx-4 mt-4 flex h-20 items-center gap-4 rounded-2xl border border-borderDefault bg-secondaryBg px-6 py-4"
+    class="mx-4 mt-4 flex h-20 items-center gap-4 rounded-2xl bg-listCardBg px-6 py-4 shadow-soft"
   >
     <button
       v-if="isVisible(HEADER_PARTS.BACK)"

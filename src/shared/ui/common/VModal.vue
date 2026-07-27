@@ -86,7 +86,9 @@ onBeforeUnmount(() => {
 
           <slot name="body" :form-id="formId" />
 
-          <slot name="footer" :form-id="formId" />
+          <div v-if="$slots.footer" class="mt-6 flex items-center gap-3">
+            <slot name="footer" :form-id="formId" />
+          </div>
         </section>
       </div>
     </Transition>

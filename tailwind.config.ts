@@ -130,6 +130,8 @@ export default {
         gradientTo: '#7592FF',
         themeSwitchBorder: '#B7C7F8',
         thumb: 'rgba(11, 0, 80, 0.2)',
+        'shadow-color': 'rgba(15, 23, 42, 0.32)',
+        listCardBg: '#FFFFFF',
       },
       dark: {
         primaryBg: '#0B0F1A',
@@ -182,6 +184,8 @@ export default {
         gradientTo: '#183BC4',
         themeSwitchBorder: '#2C345A',
         thumb: 'rgba(11, 0, 80, 0.2)',
+        'shadow-color': 'rgba(74, 118, 255, 0.85)',
+        listCardBg: '#232C52',
       },
     }),
   ],
