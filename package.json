@@ -13,7 +13,8 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "format": "oxfmt src/",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy": "npm run build-only && gh-pages -d dist"
   },
   "dependencies": {
     "@ametie/vue-muza-use": "^1.6.2",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
+    "@types/luxon": "^3.7.2",
     "@types/node": "^24.10.13",
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/eslint-config-typescript": "^14.7.0",
@@ -44,6 +46,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-oxlint": "~1.50.0",
     "eslint-plugin-vue": "~10.8.0",
+    "gh-pages": "^6.3.0",
     "jiti": "^2.6.1",
     "jsdom": "^29.0.1",
     "npm-run-all2": "^8.0.4",

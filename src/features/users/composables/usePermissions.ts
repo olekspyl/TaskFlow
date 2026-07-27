@@ -1,4 +1,5 @@
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { selectTypes } from '@/shared/types'
 import { PermsTypes } from '@/shared/types'
 import { getNormalizedRouteId } from '@/shared/utils'
@@ -19,9 +20,17 @@ import {
 } from '@/features/users/utils'
 
 export const usePermissions = () => {
+  const { t } = useI18n()
+
+  const getRoleLabel = (role: string): string => {
+    return role === 'admin' || role === 'user'
+      ? t(`users.roles.${role}`)
+      : role.charAt(0).toUpperCase() + role.slice(1)
+  }
+
   const userPermissions = ref<Record<string, boolean>>({})
   const allPerm = ref(false)
-  const selectedRole = ref<selectTypes.Option>({ label: 'User', value: 'user' })
+  const selectedRole = ref<selectTypes.Option>({ label: getRoleLabel('user'), value: 'user' })
   const baseRole = ref<PermsTypes.Roles>()
   const adminLockedRows = ref<Record<string, boolean>>({})
   const permissionRows = computed<PermsTypes.PermissionRow[]>(() =>
@@ -40,7 +49,7 @@ export const usePermissions = () => {
       if (!userData.value) return
       const role = userData.value.role
       selectedRole.value = {
-        label: role ? role.charAt(0).toUpperCase() + role.slice(1) : '',
+        label: role ? getRoleLabel(role) : '',
         value: role,
       }
       baseRole.value = role
@@ -73,7 +82,7 @@ export const usePermissions = () => {
       await executeGetRolesPerm()
     }
 
-    return createUserDefaultsMap(allPermissions.value, permissionsByRoles.value?.USER)
+    return createUserDefaultsMap(allPermissions.value ?? undefined, permissionsByRoles.value?.USER)
   }
 
   const applyUserRoleDefaults = async () => {

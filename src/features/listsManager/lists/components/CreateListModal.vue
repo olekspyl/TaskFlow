@@ -26,6 +26,10 @@ const closeModal = (): void => {
   emit('close')
 }
 
+function openCustomColorPicker(): void {
+  customColorInput.value?.click()
+}
+
 const handleSubmit = async (): Promise<void> => {
   await createList()
 

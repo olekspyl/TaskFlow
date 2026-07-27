@@ -7,7 +7,7 @@ const getPermissionAction = (category: string, value: string) => {
     return ADMIN_ACTION
   }
 
-  const [action] = value.split(':')
+  const [action = ''] = value.split(':')
 
   return action
 }

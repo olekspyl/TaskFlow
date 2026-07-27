@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import Multiselect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.css'
 import { selectTypes } from '@/shared/types'
@@ -6,6 +7,7 @@ import { selectTypes } from '@/shared/types'
 const props = defineProps<{
   options: selectTypes.Option[]
   label: string
+  trackBy?: string
   errors?: string[]
   searchable?: boolean
   'allow-empty'?: boolean
@@ -15,16 +17,13 @@ const props = defineProps<{
   'deselect-label'?: string
 }>()
 
-const {
-  options,
-  label,
-  searchable = false,
-  'allow-empty': allowEmpty = false,
-  placeholder = '',
-  'select-label': selectLabel = '',
-  'selected-label': selectedLabel = '',
-  'deselect-label': deselectLabel = '',
-} = props
+const trackBy = computed(() => props.trackBy ?? 'value')
+const searchable = computed(() => props.searchable ?? false)
+const allowEmpty = computed(() => props['allow-empty'] ?? false)
+const placeholder = computed(() => props.placeholder ?? '')
+const selectLabel = computed(() => props['select-label'] ?? '')
+const selectedLabel = computed(() => props['selected-label'] ?? '')
+const deselectLabel = computed(() => props['deselect-label'] ?? '')
 
 const model = defineModel<selectTypes.Option>()
 const emit = defineEmits<{
@@ -36,23 +35,23 @@ const emit = defineEmits<{
   <div class="flex items-center gap-6">
     <label class="block shrink-0">
       <slot>
-        {{ label }}
+        {{ props.label }}
       </slot>
     </label>
 
     <Multiselect
       v-model="model"
       class="role-select"
-      track-by="label"
+      :track-by="trackBy"
       label="label"
-      :options="options"
+      :options="props.options"
       :searchable="searchable"
       :allow-empty="allowEmpty"
       :placeholder="placeholder"
       :select-label="selectLabel"
       :selected-label="selectedLabel"
       :deselect-label="deselectLabel"
-      @select="(option) => emit('select', option)"
+      @select="(option: selectTypes.Option) => emit('select', option)"
     />
     <div v-if="errors?.length" class="flex flex-col gap-1">
       <span v-for="error in errors" :key="error" class="text-uiCaption text-txtMutedLight">

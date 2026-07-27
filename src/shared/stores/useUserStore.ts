@@ -45,8 +45,8 @@ export const useUserStore = defineStore('user', () => {
   } = fetchUserMe({
     onSuccess: () => {
       role.value = userState.value?.role
-      perms.value = userState.value?.permissions
-      userName.value = userState.value?.name
+      perms.value = userState.value?.permissions ?? []
+      userName.value = userState.value?.name ?? ''
     },
   })
 

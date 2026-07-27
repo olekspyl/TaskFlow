@@ -1,5 +1,6 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { PermsTypes } from '@/shared/types'
+import type { UsersTypes } from '@/features/users/types'
 
 const { PermissionsSetTitle } = PermsTypes
 
@@ -31,10 +32,14 @@ export const permissionsGroup = ref<PermsTypes.PermissionsGroup>([
   },
 ])
 
-export const initPermissions = (userData, permissions, userPermissions) => {
-  const result = permissions.reduce(
-    (acc, perm) => {
-      acc.permissionsMap[perm.value] = userData.permissions.includes(perm.value) ?? false
+export const initPermissions = (
+  userData: UsersTypes.UserResponse | null | undefined,
+  permissions: PermsTypes.Permissions | null | undefined,
+  userPermissions: Ref<Record<string, boolean>>,
+) => {
+  const result = (permissions ?? []).reduce(
+    (acc, perm: PermsTypes.PermissionItem) => {
+      acc.permissionsMap[perm.value] = userData?.permissions.includes(perm.value) ?? false
 
       acc.groups = acc.groups.map((group) => {
         if (group.category.includes(perm.category)) {
@@ -53,7 +58,7 @@ export const initPermissions = (userData, permissions, userPermissions) => {
       permissionsMap: {} as Record<string, boolean>,
       groups: permissionsGroup.value.map((group) => ({
         ...group,
-        items: [],
+        items: [] as PermsTypes.PermissionItem[],
       })),
     },
   )
