@@ -46,3 +46,5 @@ __screenshots__/
 # Claude / Superpowers
 .claude/
 .superpowers/
+.agents/
+skills-lock.json
