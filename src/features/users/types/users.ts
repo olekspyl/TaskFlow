@@ -36,6 +36,6 @@ export type UserResponse = {
 }
 
 export enum UserActions {
-  DELETE_USER = 'Remove',
-  PROFILE_USER = 'Profile',
+  DELETE_USER = 'delete-user',
+  PROFILE_USER = 'profile-user',
 }

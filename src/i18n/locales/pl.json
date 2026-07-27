@@ -1,0 +1,21 @@
+{
+  "common": {
+    "buttons": {
+      "createList": "Create New List",
+      "resetFilters": "Reset all filters"
+    }
+  },
+  "home": {
+    "title": "Home page",
+    "welcome": "Hello, {name}!"
+  },
+  "header": {
+    "dashboard": "Good to see you again, {userName}",
+    "lists": "Manage all your task groups in one place",
+    "analytics": "See how your tasks are progressing over time",
+    "notFound": "Not Found"
+  },
+  "lists": {
+    "pageTitle": "Lists"
+  }
+}

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-import { VButton } from '@/shared/ui/common'
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { VButton, VDrawer, VInput, VConfirmModal } from '@/shared/ui/common'
+import { useModal } from '@/shared/composables'
+import { modalTypes } from '@/shared/types'
 import { useUpdateList } from '../composables/useUpdateList'
 import { useListsQuery } from '../stores/useListsQuery'
+import { PRESET_COLORS } from '../constants/createListConfig'
 import type { ListItem, ListSegment } from '../types/lists'
 
 type Props = {
@@ -17,11 +20,11 @@ const emit = defineEmits<{
   close: []
 }>()
 
+const { t } = useI18n()
 const listsQuery = useListsQuery()
 
-const { updateListForm, updateListLoading, updateList, fillUpdateListForm } = useUpdateList(
-  () => props.list.id,
-)
+const { updateListForm, updateListLoading, executeUpdateList, fillUpdateListForm, v$ } =
+  useUpdateList(() => props.list.id)
 
 fillUpdateListForm({
   title: props.list.title,
@@ -29,114 +32,101 @@ fillUpdateListForm({
   hexColor: props.list.hexColor,
 })
 
+const { open } = useModal(modalTypes.ModalId.EDIT_LIST)
+const confirmModal = useModal(modalTypes.ModalId.CONFIRM_EDIT_LIST)
+
+onMounted(open)
+
+function handleSubmit(): void {
+  confirmModal.open()
+}
+
+async function handleConfirmedSubmit(): Promise<void> {
+  await executeUpdateList()
+  confirmModal.close()
+  emit('close')
+  await listsQuery.refetch(props.collection)
+}
+
 const isSubmitDisabled = computed(() => {
-  return updateListLoading.value || !updateListForm.title.trim()
+  return updateListLoading.value || v$.value.$invalid
 })
-
-function closeModal(): void {
-  if (updateListLoading.value) {
-    return
-  }
-
-  emit('close')
-}
-
-async function refetchCurrentCollection(): Promise<void> {
-  const fetchLists =
-    props.collection === 'myLists' ? listsQuery.fetchMyLists : listsQuery.fetchUsersLists
-
-  await fetchLists()
-}
-
-async function handleSubmit(): Promise<void> {
-  await updateList()
-  await refetchCurrentCollection()
-
-  emit('close')
-}
 </script>
 
 <template>
-  <Teleport to="body">
-    <div
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
-      role="presentation"
-      @mousedown.self="closeModal"
-    >
-      <section
-        class="w-full max-w-md rounded-xl bg-white p-6 shadow-xl"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="edit-list-modal-title"
-      >
-        <header class="mb-6 flex items-center justify-between gap-4">
-          <h2 id="edit-list-modal-title" class="text-xl font-semibold">Edit list</h2>
+  <VDrawer
+    :id="modalTypes.ModalId.EDIT_LIST"
+    :title="t('lists.edit.title')"
+    :disable-close="updateListLoading"
+    @close="emit('close')"
+  >
+    <template #body="{ formId }">
+      <form :id="formId" class="flex flex-col gap-4" @submit.prevent="handleSubmit">
+        <VInput
+          v-model.trim="updateListForm.title"
+          :label="t('lists.create.titleLabel')"
+          required
+          autocomplete="off"
+        />
+        <VInput
+          v-model="updateListForm.deadline"
+          :label="t('lists.create.deadlineLabel')"
+          type="datetime-local"
+        />
 
-          <button
-            type="button"
-            class="text-2xl leading-none"
-            aria-label="Close modal"
-            :disabled="updateListLoading"
-            @click="closeModal"
-          >
-            ×
-          </button>
-        </header>
+        <div class="flex flex-col gap-1">
+          <span class="text-uiLabel text-muted">{{ t('lists.create.colorLabel') }}</span>
 
-        <form class="flex flex-col gap-4" @submit.prevent="handleSubmit">
-          <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium"> Title </span>
-
-            <input
-              v-model.trim="updateListForm.title"
-              type="text"
-              required
-              autocomplete="off"
-              class="rounded-md border px-3 py-2"
-            />
-          </label>
-
-          <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium"> Deadline </span>
-
-            <input
-              v-model="updateListForm.deadline"
-              type="datetime-local"
-              class="rounded-md border px-3 py-2"
-            />
-          </label>
-
-          <label class="flex flex-col gap-1">
-            <span class="text-sm font-medium"> Color </span>
-
-            <input
-              v-model="updateListForm.hexColor"
-              type="color"
-              class="h-10 w-full cursor-pointer rounded-md border p-1"
-            />
-          </label>
-
-          <footer class="mt-4 flex justify-end gap-3">
-            <VButton
-              text="Cancel"
+          <div class="flex items-center gap-2.5">
+            <button
+              v-for="color in PRESET_COLORS"
+              :key="color"
               type="button"
-              variant="secondary"
-              :disabled="updateListLoading"
-              @click="closeModal"
+              class="h-7 w-7 rounded-full transition-transform hover:scale-110"
+              :style="{
+                backgroundColor: color,
+                boxShadow:
+                  updateListForm.hexColor === color
+                    ? `0 0 0 2px var(--color-secondaryBg), 0 0 0 4px ${color}`
+                    : 'none',
+              }"
+              :aria-label="t('lists.create.selectColor', { color })"
+              @click="updateListForm.hexColor = color"
             />
+          </div>
+        </div>
+      </form>
+    </template>
 
-            <VButton
-              text="Save changes"
-              type="submit"
-              variant="primary"
-              :disabled="isSubmitDisabled"
-              :loading="updateListLoading"
-            />
-          </footer>
-        </form>
-      </section>
-    </div>
-  </Teleport>
+    <template #footer="{ formId }">
+      <VButton
+        :text="t('lists.create.cancel')"
+        type="button"
+        variant="icon"
+        :disabled="updateListLoading"
+        @click="emit('close')"
+      />
+
+      <VButton
+        :form="formId"
+        :text="t('lists.edit.submit')"
+        type="submit"
+        variant="primary"
+        :disabled="isSubmitDisabled"
+        :loading="updateListLoading"
+      />
+    </template>
+  </VDrawer>
+
+  <VConfirmModal
+    :id="modalTypes.ModalId.CONFIRM_EDIT_LIST"
+    :title="t('lists.edit.confirmTitle')"
+    :message="t('lists.edit.confirmMessage')"
+    :confirm-text="t('lists.edit.confirmSubmit')"
+    :loading="updateListLoading"
+    @confirm="handleConfirmedSubmit"
+    @close="confirmModal.close"
+  />
 </template>
 
 <style scoped></style>

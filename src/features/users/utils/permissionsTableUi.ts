@@ -5,10 +5,13 @@ const formatPermissionActionLabel = (action: PermsTypes.PermissionAction) => {
   return action.charAt(0).toUpperCase() + action.slice(1)
 }
 
-export const createPermissionColumns = (actions: PermsTypes.PermissionAction[]) => [
+export const createPermissionColumns = (
+  actions: PermsTypes.PermissionAction[],
+  moduleColumnLabel: string,
+) => [
   {
     key: 'module',
-    label: 'Module',
+    label: moduleColumnLabel,
     width: '300px',
   },
   ...actions.map((action) => ({

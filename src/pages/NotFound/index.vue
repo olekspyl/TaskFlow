@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { VButton } from '@/shared/ui/common'
+
+const { t } = useI18n()
 </script>
 
 <template>
   <div>
-    <p>Page is not exist, please, return to home</p>
-    <VButton to="/" text="return" />
+    <p>{{ t('notFound.message') }}</p>
+    <VButton to="/" :text="t('notFound.button')" />
   </div>
 </template>
 

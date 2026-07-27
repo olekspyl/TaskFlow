@@ -1,5 +1,6 @@
 import { reactive, computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import useVuelidate from '@vuelidate/core'
 import {
   helpers,
@@ -13,6 +14,7 @@ import type { SignupFormState } from '../types/auth'
 import { useToast } from '@/shared/composables'
 
 export const useSignupForm = () => {
+  const { t } = useI18n()
   const { showSuccess } = useToast()
   const router = useRouter()
   const state = reactive<SignupFormState>({
@@ -36,27 +38,30 @@ export const useSignupForm = () => {
     data: () => ({ email: state.email, password: state.password, name: state.fullname }),
     onSuccess: async () => {
       resetForm()
-      showSuccess('you are registered')
+      showSuccess(t('auth.toast.signupSuccess'))
       await router.push('/auth#login')
     },
   })
 
   const rules = computed(() => ({
     fullname: {
-      required: helpers.withMessage('Full name is required', required),
-      minLength: helpers.withMessage('Full name must be at least 2 characters', minLength(2)),
+      required: helpers.withMessage(t('auth.validation.fullNameRequired'), required),
+      minLength: helpers.withMessage(t('auth.validation.fullNameMinLength'), minLength(2)),
     },
     email: {
-      required: helpers.withMessage('Email is required', required),
-      email: helpers.withMessage('Enter a valid email', emailValidator),
+      required: helpers.withMessage(t('auth.validation.emailRequired'), required),
+      email: helpers.withMessage(t('auth.validation.emailInvalid'), emailValidator),
     },
     password: {
-      required: helpers.withMessage('Password is required', required),
-      minLength: helpers.withMessage('Password must be at least 8 characters', minLength(8)),
+      required: helpers.withMessage(t('auth.validation.passwordRequired'), required),
+      minLength: helpers.withMessage(t('auth.validation.passwordMinLength'), minLength(8)),
     },
     confirmPassword: {
-      required: helpers.withMessage('Confirm password is required', required),
-      sameAsPassword: helpers.withMessage('Passwords do not match', sameAs(state.password)),
+      required: helpers.withMessage(t('auth.validation.confirmPasswordRequired'), required),
+      sameAsPassword: helpers.withMessage(
+        t('auth.validation.passwordsMismatch'),
+        sameAs(state.password),
+      ),
     },
   }))
 

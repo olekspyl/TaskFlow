@@ -1,4 +1,5 @@
 import type { Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToast } from '@/shared/composables'
 import { getNormalizedRouteId } from '@/shared/utils'
 import { usersApi } from '@/features/users/api'
@@ -12,6 +13,7 @@ type Params = {
 }
 
 export const useSaveUserPermissions = ({ userPermissions, selectedRole, baseRole }: Params) => {
+  const { t } = useI18n()
   const { showSuccess } = useToast()
   const { patchUserPermissions, patchUserRole } = usersApi()
 
@@ -20,7 +22,7 @@ export const useSaveUserPermissions = ({ userPermissions, selectedRole, baseRole
       lazy: true,
       data: () => formatPermissionsToArr(userPermissions.value),
       onSuccess: () => {
-        showSuccess('Permissions have changed')
+        showSuccess(t('users.toast.permissionsChanged'))
       },
     })
 
@@ -28,7 +30,7 @@ export const useSaveUserPermissions = ({ userPermissions, selectedRole, baseRole
     lazy: true,
     data: () => ({ role: selectedRole.value.value }),
     onSuccess: () => {
-      showSuccess('Role has changed')
+      showSuccess(t('users.toast.roleChanged'))
       baseRole.value = selectedRole.value.value as PermsTypes.Roles
       executePatchPermissions()
     },

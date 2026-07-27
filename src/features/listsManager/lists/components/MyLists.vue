@@ -11,17 +11,15 @@ type Props = {
 
 defineProps<Props>()
 
-const emit = defineEmits<{
-  edit: [list: ListItem]
-}>()
 const { t } = useI18n()
 const isCreateModalOpen = ref(false)
 
-function openCreateModal(): void {
+
+const openCreateModal = () => {
   isCreateModalOpen.value = true
 }
 
-function closeCreateModal(): void {
+const closeCreateModal = () => {
   isCreateModalOpen.value = false
 }
 </script>
@@ -36,13 +34,12 @@ function closeCreateModal(): void {
       @click="openCreateModal"
     />
   </Teleport>
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
     <ListContainer
       v-for="list in lists"
       :key="list.id"
       :list="list"
       collection="myLists"
-      @edit="emit('edit', $event)"
     />
   </div>
   <CreateListModal v-if="isCreateModalOpen" @close="closeCreateModal" />

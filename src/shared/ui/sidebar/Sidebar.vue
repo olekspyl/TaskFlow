@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { clearAllCache } from '@ametie/vue-muza-use'
 import { VIcon } from '@/shared/ui/common'
 import { useUserStore } from '@/shared/stores'
 import { NavItem } from '.'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   modelValue: boolean
@@ -35,7 +38,7 @@ const handleLogout = () => {
       class="absolute right-[-12px] top-1/2 z-[50] flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-borderDefault bg-elevated text-muted transition-colors hover:border-primary hover:text-primary"
       type="button"
       :aria-expanded="isSidebarOpen"
-      aria-label="Toggle sidebar"
+      :aria-label="t('sidebar.toggleAriaLabel')"
     >
       <VIcon :icon="isSidebarOpen ? 'lucide:chevron-left' : 'lucide:chevron-right'" :size="11" />
     </button>
@@ -50,7 +53,7 @@ const handleLogout = () => {
         v-show="isSidebarOpen"
         class="truncate text-[12.5px] font-semibold leading-none text-txtPrimaryDark"
       >
-        AdminApp
+        {{ t('sidebar.appName') }}
       </span>
     </div>
 
@@ -58,12 +61,12 @@ const handleLogout = () => {
       v-show="isSidebarOpen"
       class="shrink-0 px-4 pb-1 pt-3 text-[9.5px] font-semibold uppercase tracking-[1.1px] text-txtSecondaryDark opacity-50"
     >
-      Navigation
+      {{ t('sidebar.navigationTitle') }}
     </p>
 
     <nav
       class="flex flex-1 flex-col gap-[1px] overflow-y-auto px-2 py-1"
-      aria-label="Sidebar navigation"
+      :aria-label="t('sidebar.navAriaLabel')"
     >
       <NavItem />
     </nav>
@@ -71,7 +74,7 @@ const handleLogout = () => {
     <div class="shrink-0 border-t border-borderDefault px-2 py-2">
       <NavItem
         do="action"
-        :items="{ title: 'Logout', img: 'lucide:log-out' }"
+        :items="{ title: t('sidebar.logout'), img: 'lucide:log-out' }"
         :on-click="handleLogout"
       />
     </div>

@@ -1,9 +1,9 @@
 export enum PermissionsSetTitle {
-  LIST_PERMISSIONS = 'List Permissions',
-  USER_MANAGEMENT = 'User Management',
-  TASKS_PERMISSIONS = 'Tasks Permissions',
-  ANALYTICS = 'Analytics',
-  DASHBOARD = 'Dashboard',
+  LIST_PERMISSIONS = 'list-permissions',
+  USER_MANAGEMENT = 'user-management',
+  TASKS_PERMISSIONS = 'tasks-permissions',
+  ANALYTICS = 'analytics',
+  DASHBOARD = 'dashboard',
 }
 
 export interface PermissionItem {

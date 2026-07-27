@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs, type ClassValue } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const route = useRoute()
 const attrs = useAttrs()
+const { t } = useI18n()
 
 type Tab = {
   id: string
@@ -29,7 +31,7 @@ const {
   tabSelectionMode = 'auto',
   useHash = true,
   defaultTab,
-  ariaLabel = 'Tabs',
+  ariaLabel,
   tabListClass,
   tabItemClass,
   activeTabItemClass,
@@ -39,6 +41,7 @@ const activeTabId = ref(route.hash ? route.hash.slice(1) : defaultTab)
 const activeTabComponent = computed(() => tabs.find((t) => t.id === activeTabId.value) ?? tabs[0])
 
 const rootClass = computed(() => attrs.class as ClassValue | undefined)
+const resolvedAriaLabel = computed(() => ariaLabel ?? t('common.tabsAriaLabel'))
 
 const isActive = (tabId: string) => activeTabId.value === tabId
 
@@ -70,7 +73,7 @@ defineExpose({
   <div>
     <div
       role="tablist"
-      :aria-label="ariaLabel"
+      :aria-label="resolvedAriaLabel"
       :class="tabListClass ?? ['mb-8 flex justify-center', rootClass]"
     >
       <button

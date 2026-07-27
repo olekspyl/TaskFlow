@@ -56,14 +56,21 @@ export type UpdateListResponse = ListItem
 export type DeleteListResponse = void
 
 export enum ListActions {
-  EDIT_LIST = 'Edit List',
-  DELETE_LIST = 'Delete List',
+  EDIT_LIST = 'edit-list',
+  DELETE_LIST = 'delete-list',
 }
 
 export type ListSegment = 'myLists' | 'usersLists'
 
 export type SortingOption = {
+  id: string
   label: string
   value: 'asc' | 'desc'
   sortCategory: string
+}
+
+export type ListForm = {
+  title: string
+  deadline: string
+  hexColor: string
 }

@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { VInput } from '@/shared/ui/common'
 import { useSignupForm } from '../composables/useSignupForm'
 import AuthCard from './AuthCard.vue'
 
+const { t } = useI18n()
 const { state, v$, onSubmit, error, serverErrors, loading } = useSignupForm()
 </script>
 
 <template>
   <AuthCard
-    title="Create your account"
-    submitText="Sign up"
+    :title="t('auth.signup.title')"
+    :submitText="t('auth.signup.submit')"
     :loading="loading"
     :error-message="error?.message"
     @submit="onSubmit"
@@ -17,7 +19,9 @@ const { state, v$, onSubmit, error, serverErrors, loading } = useSignupForm()
     <template #title></template>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-signup-name">Full Name</label>
+      <label class="auth-field__label" for="auth-signup-name">{{
+        t('auth.signup.fullNameLabel')
+      }}</label>
       <VInput
         id="auth-signup-name"
         v-model.trim="state.fullname"
@@ -29,7 +33,9 @@ const { state, v$, onSubmit, error, serverErrors, loading } = useSignupForm()
     </div>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-signup-email">Email</label>
+      <label class="auth-field__label" for="auth-signup-email">{{
+        t('auth.signup.emailLabel')
+      }}</label>
       <VInput
         id="auth-signup-email"
         v-model.trim="state.email"
@@ -41,7 +47,9 @@ const { state, v$, onSubmit, error, serverErrors, loading } = useSignupForm()
     </div>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-signup-password">Password</label>
+      <label class="auth-field__label" for="auth-signup-password">{{
+        t('auth.signup.passwordLabel')
+      }}</label>
       <VInput
         id="auth-signup-password"
         v-model.trim="state.password"
@@ -54,7 +62,9 @@ const { state, v$, onSubmit, error, serverErrors, loading } = useSignupForm()
     </div>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-signup-confirm">Confirm Password</label>
+      <label class="auth-field__label" for="auth-signup-confirm">{{
+        t('auth.signup.confirmPasswordLabel')
+      }}</label>
       <VInput
         id="auth-signup-confirm"
         v-model.trim="state.confirmPassword"

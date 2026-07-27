@@ -8,7 +8,9 @@ type Props = {
 
 const { text, tag = 'h1' } = defineProps<Props>()
 const computedStyle = computed(() => {
-  return tag === 'h1' ? 'text-headPrimary text-txtPrimary' : ''
+  if (tag === 'h1') return 'text-headPrimary text-txtPrimary'
+  if (tag === 'h3') return 'text-headingCard text-txtPrimary'
+  return ''
 })
 </script>
 

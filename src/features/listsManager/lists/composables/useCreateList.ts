@@ -1,28 +1,27 @@
-import { reactive } from 'vue'
-
+import { reactive, toValue } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToast } from '@/shared/composables'
-
 import { listsApi } from '../api'
-
-const LISTS_AUTO_CACHE_PREFIX = 'auto:GET:/lists:'
+import { useListsQuery } from '../stores/useListsQuery'
+import { useListFormValidation } from './useListFormValidation'
 
 export const useCreateList = () => {
+  const { t } = useI18n()
   const { postNewList } = listsApi()
   const { showSuccess } = useToast()
+  const { myListsCacheKey } = useListsQuery()
 
   const createListForm = reactive({
-    title: 'test 10',
-    deadline: '2023-12-31T23:59:59.000Z',
+    title: '',
+    deadline: '',
     hexColor: '#FF5733',
   })
 
+  const v$ = useListFormValidation(createListForm)
+
   const { loading: createListLoading, execute: executeCreateList } = postNewList({
     lazy: true,
-
-    invalidateCache: {
-      prefix: LISTS_AUTO_CACHE_PREFIX,
-    },
-
+    invalidateCache: toValue(myListsCacheKey) ?? [],
     data: () => ({
       title: createListForm.title,
       deadline: createListForm.deadline,
@@ -30,13 +29,9 @@ export const useCreateList = () => {
     }),
 
     onSuccess: () => {
-      showSuccess('New list has been created')
+      showSuccess(t('lists.toast.created'))
     },
   })
-
-  const createList = async (): Promise<void> => {
-    await executeCreateList()
-  }
 
   const resetCreateListForm = (): void => {
     createListForm.title = ''
@@ -48,7 +43,8 @@ export const useCreateList = () => {
     createListForm,
     createListLoading,
 
-    createList,
+    executeCreateList,
     resetCreateListForm,
+    v$,
   }
 }

@@ -65,7 +65,7 @@ const handleClick = (e: Event) => {
       <VIcon v-if="iconLeft" :icon="iconLeft" class="text-primary" />
     </slot>
     <slot>
-      <span class="py-3">
+      <span>
         {{ text }}
       </span>
     </slot>
@@ -75,7 +75,7 @@ const handleClick = (e: Event) => {
     <slot name="iconRight">
       <VIcon v-if="iconRight" :icon="iconRight" />
     </slot>
-    <VIcon v-if="disabled || loading" icon="eos-icons:loading" />
+    <VIcon v-if="loading" icon="eos-icons:loading" />
   </component>
 </template>
 

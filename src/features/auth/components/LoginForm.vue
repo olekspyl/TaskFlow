@@ -1,15 +1,17 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { VInput } from '@/shared/ui/common'
 import { useLoginForm } from '../composables/useLoginForm'
 import { AuthCard } from '.'
 
+const { t } = useI18n()
 const { state, v$, onSubmit, loading, error } = useLoginForm()
 </script>
 
 <template>
   <AuthCard
-    title="Welcome back"
-    submitText="Log in"
+    :title="t('auth.login.title')"
+    :submitText="t('auth.login.submit')"
     :loading="loading"
     :errorMessage="error?.message"
     @submit="onSubmit"
@@ -17,7 +19,7 @@ const { state, v$, onSubmit, loading, error } = useLoginForm()
     <template #title></template>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-login-email">Email</label>
+      <label class="auth-field__label" for="auth-login-email">{{ t('auth.login.emailLabel') }}</label>
       <VInput
         id="auth-login-email"
         v-model.trim="state.email"
@@ -29,7 +31,9 @@ const { state, v$, onSubmit, loading, error } = useLoginForm()
     </div>
 
     <div class="auth-field">
-      <label class="auth-field__label" for="auth-login-password">Password</label>
+      <label class="auth-field__label" for="auth-login-password">{{
+        t('auth.login.passwordLabel')
+      }}</label>
       <VInput
         id="auth-login-password"
         v-model.trim="state.password"

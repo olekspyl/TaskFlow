@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { selectTypes } from '@/shared/types'
 import { Table } from '@/shared/ui/table'
 import { VButton, VCheckbox } from '@/shared/ui/common'
@@ -13,6 +14,22 @@ import {
   isPermissionCheckboxVisible,
   getPermissionsSummary,
 } from '@/features/users/utils'
+
+const { t } = useI18n()
+
+const permissionsSetLabelKeys: Record<string, string> = {
+  'list-permissions': 'users.permissionsSets.listPermissions',
+  'user-management': 'users.permissionsSets.userManagement',
+  'tasks-permissions': 'users.permissionsSets.tasksPermissions',
+  analytics: 'users.permissionsSets.analytics',
+  dashboard: 'users.permissionsSets.dashboard',
+}
+
+const getModuleLabel = (module: string): string => {
+  const labelKey = permissionsSetLabelKeys[module]
+
+  return labelKey ? t(labelKey) : module
+}
 
 const {
   userPermissions,
@@ -37,12 +54,14 @@ const { patchPermissionsLoading, rolesLoading, saveUserPermissions } = useSaveUs
   baseRole,
 })
 
-const roleOptions: selectTypes.Option[] = [
-  { label: 'Admin', value: 'admin' },
-  { label: 'User', value: 'user' },
-]
+const roleOptions = computed<selectTypes.Option[]>(() => [
+  { label: t('users.roles.admin'), value: 'admin' },
+  { label: t('users.roles.user'), value: 'user' },
+])
 
-const permissionColumns = computed(() => createPermissionColumns(permissionActions.value))
+const permissionColumns = computed(() =>
+  createPermissionColumns(permissionActions.value, t('users.permissions.moduleColumn')),
+)
 
 const permissionsSummary = computed(() => getPermissionsSummary(userPermissions.value))
 
@@ -97,11 +116,13 @@ const handleCheckboxChange = async (
         :scrollable="false"
       >
         <template #toolbar>
-          <span class="mb-4 block text-headingCard text-txtPrimary">Permission matrix</span>
+          <span class="mb-4 block text-headingCard text-txtPrimary">{{
+            t('users.permissions.matrixTitle')
+          }}</span>
         </template>
 
         <template #module="{ item }">
-          <span class="text-sm font-medium text-txtPrimary"> {{ item.module }} </span>
+          <span class="text-sm font-medium text-txtPrimary"> {{ getModuleLabel(item.module) }} </span>
         </template>
 
         <template v-for="action in permissionActions" #[action]="{ item }" :key="action">
@@ -120,7 +141,7 @@ const handleCheckboxChange = async (
             <VCheckbox
               :model-value="allPerm"
               @update:model-value="onAllPermUpdate"
-              label="All permissions"
+              :label="t('users.permissions.allPermissionsLabel')"
               variant="switch"
               :disabled="isSelectAllDisabled()"
             />
@@ -130,7 +151,7 @@ const handleCheckboxChange = async (
               :disabled="patchPermissionsLoading || rolesLoading"
               :loading="rolesLoading || patchPermissionsLoading"
             >
-              Save
+              {{ t('users.permissions.save') }}
             </VButton>
           </div>
         </template>

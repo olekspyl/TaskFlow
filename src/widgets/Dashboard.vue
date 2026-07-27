@@ -10,7 +10,7 @@ const user = useUserStore()
   <Teleport defer to='[data-header-slot="title"]'>
     <VTitle :text="t('header.dashboard', { userName: user.userName })" tag="h3" />
   </Teleport>
-  <div>dashboard</div>
+  <div>{{ t('navigation.dashboard') }}</div>
 </template>
 
 <style scoped></style>

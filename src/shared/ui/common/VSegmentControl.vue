@@ -31,16 +31,16 @@ const selectTag = (tag: TagItem) => {
 </script>
 
 <template>
-  <div class="inline-flex rounded-full bg-elevated p-1">
+  <div class="flex gap-6">
     <button
       v-for="tag in tags"
       :key="tag.id"
       type="button"
-      class="rounded-full px-4 py-1.5 text-uiLabel transition-colors duration-150 ease-out"
+      class="border-b-2 pb-1 text-sm transition-colors duration-150 ease-out"
       :class="
         activeTag === tag.id
-          ? 'bg-secondaryBg text-txtPrimary shadow-soft'
-          : 'text-muted hover:text-txtPrimary'
+          ? 'border-primary font-semibold text-txtPrimary'
+          : 'border-transparent font-medium text-muted hover:text-txtPrimary'
       "
       @click="selectTag(tag)"
     >

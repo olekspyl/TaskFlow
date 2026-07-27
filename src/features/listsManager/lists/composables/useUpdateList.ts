@@ -1,35 +1,31 @@
 import { reactive, toValue, type MaybeRefOrGetter } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useToast } from '@/shared/composables'
 import { listsApi } from '../api'
-import { LISTS_AUTO_CACHE_PREFIX } from '../constants/cache'
+import { useListsQuery } from '../stores/useListsQuery'
+import { useListFormValidation } from './useListFormValidation'
+import { type ListForm } from '../types/lists'
 
-type UpdateListForm = {
-  title: string
-  deadline: string
-  hexColor: string
-}
-
-const createDefaultForm = (): UpdateListForm => ({
+const createDefaultForm = (): ListForm => ({
   title: '',
   deadline: '',
   hexColor: '#FF5733',
 })
 
 export const useUpdateList = (listId: MaybeRefOrGetter<string | null>) => {
+  const { t } = useI18n()
   const { updateListById } = listsApi()
   const { showSuccess } = useToast()
+  const { myListsCacheKey } = useListsQuery()
 
-  const updateListForm = reactive<UpdateListForm>(createDefaultForm())
+  const updateListForm = reactive<ListForm>(createDefaultForm())
+  const v$ = useListFormValidation(updateListForm)
 
   const { loading: updateListLoading, execute: executeUpdateList } = updateListById(
     () => toValue(listId),
     {
       lazy: true,
-
-      invalidateCache: {
-        prefix: LISTS_AUTO_CACHE_PREFIX,
-      },
-
+      invalidateCache: toValue(myListsCacheKey) ?? [],
       data: () => ({
         title: updateListForm.title,
         deadline: updateListForm.deadline,
@@ -37,16 +33,12 @@ export const useUpdateList = (listId: MaybeRefOrGetter<string | null>) => {
       }),
 
       onSuccess: () => {
-        showSuccess('List has been updated')
+        showSuccess(t('lists.toast.updated'))
       },
     },
   )
 
-  const updateList = async (): Promise<void> => {
-    await executeUpdateList()
-  }
-
-  const fillUpdateListForm = (values: UpdateListForm): void => {
+  const fillUpdateListForm = (values: ListForm): void => {
     updateListForm.title = values.title
     updateListForm.deadline = values.deadline
     updateListForm.hexColor = values.hexColor
@@ -59,9 +51,9 @@ export const useUpdateList = (listId: MaybeRefOrGetter<string | null>) => {
   return {
     updateListForm,
     updateListLoading,
-
-    updateList,
     fillUpdateListForm,
     resetUpdateListForm,
+    executeUpdateList,
+    v$,
   }
 }

@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VLoader, VTabs } from '@/shared/ui/common'
 import { useUserStore } from '@/shared/stores'
 import { LoginForm, SignupForm } from './components'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 
-const tabs = [
-  { id: 'login', label: 'Login' },
-  { id: 'signup', label: 'Signup' },
-]
+const tabs = computed(() => [
+  { id: 'login', label: t('auth.tabs.login') },
+  { id: 'signup', label: t('auth.tabs.signup') },
+])
 </script>
 
 <template>
@@ -18,7 +21,7 @@ const tabs = [
       v-else
       :tabs="tabs"
       default-tab="login"
-      aria-label="Auth tabs"
+      :aria-label="t('auth.tabs.ariaLabel')"
       tab-list-class="auth-nav"
       tab-item-class="auth-nav__item"
       active-tab-item-class="auth-nav__item--active"

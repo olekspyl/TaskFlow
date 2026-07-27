@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue'
 import { Icon } from '@iconify/vue'
+import { useI18n } from 'vue-i18n'
 import { useTheme } from '.'
 
+const { t } = useI18n()
 const { isDark } = useTheme()
 </script>
 
@@ -11,7 +13,7 @@ const { isDark } = useTheme()
     v-model="isDark"
     class="relative inline-flex h-7 w-12 items-center rounded-full border border-borderDefault bg-secondaryBg shadow-soft transition-colors focus:outline-none focus-visible:shadow-focusRing"
   >
-    <span class="sr-only">Toggle theme</span>
+    <span class="sr-only">{{ t('common.themeToggle') }}</span>
 
     <span
       :class="isDark ? 'translate-x-6' : 'translate-x-1'"

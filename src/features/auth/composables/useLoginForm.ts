@@ -1,6 +1,7 @@
 import { reactive, computed } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { helpers, required, email as emailValidator } from '@vuelidate/validators'
 import { tokenManager } from '@ametie/vue-muza-use'
 import useAuthRequests from '../api/authApi'
@@ -8,6 +9,7 @@ import type { LoginFormState } from '../types/auth'
 import { useUserStore } from '@/shared/stores'
 
 export const useLoginForm = () => {
+  const { t } = useI18n()
   const router = useRouter()
   const { fetchLoginUser } = useAuthRequests()
   const userStore = useUserStore()
@@ -39,13 +41,13 @@ export const useLoginForm = () => {
 
   const rules = computed(() => ({
     email: {
-      required: helpers.withMessage('Email is required', required),
-      email: helpers.withMessage('Enter a valid email', emailValidator),
+      required: helpers.withMessage(t('auth.validation.emailRequired'), required),
+      email: helpers.withMessage(t('auth.validation.emailInvalid'), emailValidator),
     },
     password: {
-      required: helpers.withMessage('Password is required', required),
+      required: helpers.withMessage(t('auth.validation.passwordRequired'), required),
       minLength: helpers.withMessage(
-        'Password must be at least 8 characters',
+        t('auth.validation.passwordMinLength'),
         (value: string) => !helpers.req(value) || value.length >= 8,
       ),
     },

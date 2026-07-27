@@ -1,6 +1,7 @@
 import { DefaultHeader } from '@/widgets'
 
 export const HEADER_PARTS = {
+  BACK: 'back',
   TITLE: 'title',
   ACTIONS: 'actions',
   PERIOD: 'period',

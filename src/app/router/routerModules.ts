@@ -12,7 +12,7 @@ import {
   Users,
 } from '@/pages'
 
-import { HEADER_COMPONENTS, HEADER_PARTS } from '@/app/constants/header'
+import { HEADER_PARTS } from '@/app/constants/header'
 
 import { routerTypes } from '@/shared/types'
 
@@ -63,7 +63,7 @@ const modules: AppRouteRecordRaw[] = [
     meta: {
       permission: 'read:list',
       header: {
-        title: 'header.lists',
+        title: 'lists.pageTitle',
         showExtra: [HEADER_PARTS.ACTIONS],
       },
     },
@@ -75,7 +75,9 @@ const modules: AppRouteRecordRaw[] = [
     component: List,
     meta: {
       header: {
-        title: 'header.listDetails',
+        // Заголовок динамічний (назва конкретного списку) — ListDetail.vue
+        // виставляє його через useHeaderParts().setTitleOverride().
+        showExtra: [HEADER_PARTS.BACK, HEADER_PARTS.ACTIONS],
       },
     },
   },

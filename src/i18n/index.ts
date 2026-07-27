@@ -1,7 +1,11 @@
 import { createI18n } from 'vue-i18n'
+import { uk, en, pl } from './locales'
 
-import uk from './locales/uk.json'
-import en from './locales/en.json'
+export const locales = [
+  { code: 'uk', name: 'Українська' },
+  { code: 'en', name: 'English' },
+  { code: 'pl', name: 'Polska' },
+] as const
 
 export const i18n = createI18n({
   legacy: false,
@@ -10,5 +14,6 @@ export const i18n = createI18n({
   messages: {
     uk,
     en,
+    // pl,
   },
 })

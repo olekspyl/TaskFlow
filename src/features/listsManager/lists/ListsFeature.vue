@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
 import { useUserStore } from '@/shared/stores'
 import { VLoader, VSegmentControl } from '@/shared/ui/common'
@@ -9,11 +10,11 @@ import { Filters, MyLists, UsersLists } from './components'
 import { useListsQuery } from './stores/useListsQuery'
 import type { ListSegment } from './types/lists'
 
+const { t } = useI18n()
 const user = useUserStore()
 const listsQuery = useListsQuery()
 
-const { myLists, usersLists, myListsLoading, usersListsLoading, filtering, sorting } =
-  storeToRefs(listsQuery)
+const { lists, listsLoading, filtering, sorting } = storeToRefs(listsQuery)
 
 const activeTag = ref<ListSegment>('myLists')
 
@@ -21,8 +22,8 @@ const canViewUsersLists = computed(() => {
   return user.role === 'admin'
 })
 
-const isUsersListsAllowedToAccess = computed(() => {
-  return canViewUsersLists.value && activeTag.value === 'usersLists'
+const activeListComponent = computed(() => {
+  return activeTag.value === 'usersLists' && canViewUsersLists.value ? UsersLists : MyLists
 })
 
 async function handleFiltersChange(): Promise<void> {
@@ -46,25 +47,22 @@ onMounted(async () => {
   await listsQuery.refetch('myLists')
 })
 
-const tags: Array<{
-  id: ListSegment
-  label: string
-}> = [
+const tags = computed<Array<{ id: ListSegment; label: string }>>(() => [
   {
     id: 'myLists',
-    label: 'My lists',
+    label: t('lists.segments.myLists'),
   },
   {
     id: 'usersLists',
-    label: 'Users list',
+    label: t('lists.segments.usersLists'),
   },
-]
+])
 </script>
 
 <template>
   <div>
     <div
-      class="mb-6 flex flex-col gap-4 rounded-2xl border border-borderDefault bg-secondaryBg p-4 shadow-soft sm:flex-row sm:items-center"
+      class="sticky -top-4 z-10 mb-6 flex flex-col gap-4 border-b border-borderDefault bg-primaryBg pb-4 sm:flex-row sm:items-center"
     >
       <VSegmentControl
         v-if="canViewUsersLists"
@@ -82,15 +80,8 @@ const tags: Array<{
       />
     </div>
 
-    <template v-if="isUsersListsAllowedToAccess">
-      <VLoader v-if="usersListsLoading" size="section" />
-      <UsersLists v-else :lists="usersLists?.data ?? []" />
-    </template>
-
-    <template v-else>
-      <VLoader v-if="myListsLoading" size="section" />
-      <MyLists v-else :lists="myLists?.data ?? []" />
-    </template>
+    <VLoader v-if="listsLoading" size="section" />
+    <component :is="activeListComponent" v-show="!listsLoading" :lists="lists?.data ?? []" />
   </div>
 </template>
 

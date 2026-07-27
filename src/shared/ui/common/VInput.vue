@@ -5,7 +5,7 @@ import { useId } from 'vue'
 import { VIcon } from '.'
 
 type Props = {
-  type?: 'password' | 'email' | 'text' | 'search'
+  type?: 'password' | 'email' | 'text' | 'search' | 'datetime-local' | 'color'
   modelValue: string
   label?: string
   iconLeft?: string
@@ -17,7 +17,6 @@ type Props = {
 
 defineOptions({ inheritAttrs: false })
 
-//add icon left and icon right
 const {
   type = 'text',
   modelValue,
@@ -76,7 +75,7 @@ watch(debounced, (v) => {
     class="flex flex-col"
     :class="{ error: validation.$error, disabled: $attrs.disabled !== undefined }"
   >
-    <label v-if="label || $slots.label" :for="id" class="text-uiLabel text-txtPrimaryDark mb-[6px]">
+    <label v-if="label || $slots.label" :for="id" class="text-uiLabel text-muted mb-[6px]">
       <slot name="label">
         {{ label }}
       </slot>
@@ -86,10 +85,17 @@ watch(debounced, (v) => {
         <VIcon
           v-if="iconLeft"
           :icon="iconLeft"
-          class="absolute left-4 top-1/2 -translate-y-1/2 pl-10"
+          class="absolute left-4 top-1/2 -translate-y-1/2 text-muted"
         />
       </slot>
-      <input :id="id" :value="input" @input="onInputUpdate" :type="inputType" v-bind="attrs" />
+      <input
+        :id="id"
+        :value="input"
+        @input="onInputUpdate"
+        :type="inputType"
+        v-bind="attrs"
+        :class="{ 'pl-11': iconLeft }"
+      />
       <slot name="iconRight">
         <div
           v-if="type === 'password'"
@@ -140,5 +146,9 @@ watch(debounced, (v) => {
 
 input {
   @apply w-full border rounded-lg py-[14px] px-4 text-bodyM bg-secondaryBg text-txtPrimary border-borderDefault transition-colors hover:border-borderHover placeholder:text-muted focus:outline-none;
+
+  &.pl-11 {
+    padding-left: 2.75rem;
+  }
 }
 </style>

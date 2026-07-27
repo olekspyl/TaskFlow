@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed} from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VIcon, VButton, VSkeleton } from '@/shared/ui/common'
 import type { TableColumn, SortingOptions } from './types/table'
+
+const { t } = useI18n()
 
 type Props = {
   columns: TableColumn[]
@@ -150,7 +153,7 @@ const loadMore = () => {
             class="flex h-full min-h-[300px] items-center justify-center bg-secondaryBg text-muted"
             :style="{ gridColumn: '1 / -1' }"
           >
-            <p>There is no data in the table</p>
+            <p>{{ t('common.noData') }}</p>
           </div>
           <template v-else>
             <template v-for="(item, rowIndex) in props.items" :key="item.id ?? rowIndex">
@@ -182,7 +185,7 @@ const loadMore = () => {
  class='flex justify-center w-full'>
         <VButton
         class="w-[150px] h-[40px] p-6"
-        text="Load more"
+        :text="t('common.buttons.loadMore')"
         :disabled='props.loading'
         :loading="props.loading"
         @click="loadMore"

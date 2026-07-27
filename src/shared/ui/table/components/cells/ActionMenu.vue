@@ -5,6 +5,7 @@ import { VIcon } from '@/shared/ui/common'
 
 type Action = {
   name: string
+  label: string
   execute: () => void
   style?: string
   icon?: string
@@ -82,7 +83,7 @@ const onClickHandler = (action: Action) => {
           >
             <VIcon v-if="action.icon" :icon="action.icon" :size="16" class="shrink-0" />
             <p class="transition-colors duration-150">
-              {{ action.name }}
+              {{ action.label }}
             </p>
           </li>
         </slot>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useToast } from '@/shared/composables'
 
 const { showSuccess } = useToast()
@@ -13,17 +14,18 @@ import { VInput, VDate, VTitle, VSelect } from '@/shared/ui/common'
 import { cleanEmptyKeys } from '@/shared/utils'
 import { usersApi } from '@/features/users/api'
 
+const { t } = useI18n()
 const { fetchUsers, fetchUserById, deleteUserById } = usersApi()
 const router = useRouter()
 
-const roleOptions: selectTypes.Option[] = [
-  { label: 'All roles', value: '' },
-  { label: 'Admin', value: 'admin' },
-  { label: 'User', value: 'user' },
-]
+const roleOptions = computed<selectTypes.Option[]>(() => [
+  { label: t('users.roles.allRoles'), value: '' },
+  { label: t('users.roles.admin'), value: 'admin' },
+  { label: t('users.roles.user'), value: 'user' },
+])
 
 const activeUserId = ref<string | null>(null)
-const selectedRole = ref(roleOptions[0])
+const selectedRole = ref(roleOptions.value[0])
 const totalPages = ref(1)
 const pagination = ref({
   limit: 20,
@@ -66,13 +68,14 @@ const { execute: executeDeleteUser } = deleteUserById(() => activeUserId.value, 
   lazy: true,
   onSuccess: async () => {
     refetchUsers()
-    showSuccess('User deleted successfully by id')
+    showSuccess(t('users.toast.userDeleted'))
   },
 })
 
 const actions = (id: string) => [
   {
     name: UsersTypes.UserActions.PROFILE_USER,
+    label: t('users.actions.profile'),
     icon: 'lucide:user',
     execute: () => {
       activeUserId.value = id
@@ -81,6 +84,7 @@ const actions = (id: string) => [
   },
   {
     name: UsersTypes.UserActions.DELETE_USER,
+    label: t('users.actions.remove'),
     icon: 'lucide:trash-2',
     execute: async () => {
       activeUserId.value = id
@@ -90,12 +94,12 @@ const actions = (id: string) => [
   },
 ]
 
-const columns = [
-  { key: 'name', label: 'Member', width: '300px' },
-  { key: 'role', label: 'Role', width: '120px', sortable: true },
-  { key: 'createdAt', label: 'Registered', width: '140px', sortable: true },
+const columns = computed(() => [
+  { key: 'name', label: t('users.table.member'), width: '300px' },
+  { key: 'role', label: t('users.table.role'), width: '120px', sortable: true },
+  { key: 'createdAt', label: t('users.table.registered'), width: '140px', sortable: true },
   { key: 'actions', label: '', width: '32px' },
-]
+])
 </script>
 
 <template>
@@ -109,18 +113,18 @@ const columns = [
       :loading="getUsersLoading"
     >
       <template #toolbar>
-        <VTitle text="User Management" />
+        <VTitle :text="t('users.pageTitle')" />
         <div class="flex items-center gap-6">
           <div class="w-[320px] h-12">
             <VInput
               v-model="search"
               type="search"
-              placeholder="Search by email or name"
+              :placeholder="t('users.searchPlaceholder')"
               iconLeft="material-symbols:search"
               :debounce="1000"
             />
           </div>
-          <VSelect v-model="selectedRole" :options="roleOptions" label="Role" />
+          <VSelect v-model="selectedRole" :options="roleOptions" :label="t('users.roleLabel')" />
         </div>
       </template>
 

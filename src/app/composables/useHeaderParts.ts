@@ -9,6 +9,11 @@ type HeaderPartsConfig = {
 
 const visibleParts = ref<Set<HeaderPart>>(new Set())
 
+// Дозволяє сторінці показати динамічний заголовок (напр. назву конкретного
+// списку) замість статичного meta.header.title. Скидається при кожній
+// навігації (setVisible викликається router-guard'ом на кожен перехід).
+const titleOverride = ref<string | null>(null)
+
 export const useHeaderParts = () => {
   const hasVisibleParts = computed(() => visibleParts.value.size > 0)
 
@@ -19,6 +24,15 @@ export const useHeaderParts = () => {
     config?.hide?.forEach((part) => next.delete(part))
 
     visibleParts.value = next
+    titleOverride.value = null
+  }
+
+  const setTitleOverride = (text: string) => {
+    titleOverride.value = text
+  }
+
+  const clearTitleOverride = () => {
+    titleOverride.value = null
   }
 
   const show = (parts: readonly HeaderPart[]) => {
@@ -46,7 +60,10 @@ export const useHeaderParts = () => {
   return {
     visibleParts,
     hasVisibleParts,
+    titleOverride,
     setVisible,
+    setTitleOverride,
+    clearTitleOverride,
     show,
     hide,
     reset,

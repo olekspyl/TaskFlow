@@ -2,7 +2,17 @@
   "common": {
     "buttons": {
       "createList": "Створити новий список",
-      "resetFilters": "Скинути фільтри"
+      "resetFilters": "Скинути фільтри",
+      "loadMore": "Завантажити ще"
+    },
+    "closeModal": "Закрити модальне вікно",
+    "closeDrawer": "Закрити панель",
+    "tabsAriaLabel": "Вкладки",
+    "noData": "У таблиці немає даних",
+    "themeToggle": "Перемкнути тему",
+    "confirmModal": {
+      "cancel": "Скасувати",
+      "confirm": "Підтвердити"
     }
   },
   "home": {
@@ -13,6 +23,158 @@
     "dashboard": "Раді знову вас бачити, {userName}",
     "lists": "Керуйте всіма групами завдань в одному місці",
     "analytics": "Переглядайте прогрес виконання завдань",
-    "notFound": "Сторінку не знайдено"
+    "notFound": "Сторінку не знайдено",
+    "actionsAriaLabel": "Дії заголовка"
+  },
+  "notFound": {
+    "message": "Сторінки не існує, будь ласка, поверніться на головну",
+    "button": "Повернутись"
+  },
+  "sidebar": {
+    "appName": "AdminApp",
+    "navigationTitle": "Навігація",
+    "toggleAriaLabel": "Згорнути/розгорнути бокову панель",
+    "navAriaLabel": "Навігація бокової панелі",
+    "logout": "Вийти"
+  },
+  "navigation": {
+    "dashboard": "Дашборд",
+    "lists": "Списки",
+    "analytics": "Аналітика",
+    "profile": "Профіль",
+    "adminPanel": "Панель адміністратора"
+  },
+  "auth": {
+    "tabs": {
+      "login": "Вхід",
+      "signup": "Реєстрація",
+      "ariaLabel": "Вкладки автентифікації"
+    },
+    "login": {
+      "title": "З поверненням",
+      "submit": "Увійти",
+      "emailLabel": "Email",
+      "passwordLabel": "Пароль"
+    },
+    "signup": {
+      "title": "Створіть акаунт",
+      "submit": "Зареєструватись",
+      "fullNameLabel": "Повне ім'я",
+      "emailLabel": "Email",
+      "passwordLabel": "Пароль",
+      "confirmPasswordLabel": "Підтвердіть пароль"
+    },
+    "toast": {
+      "signupSuccess": "Ви зареєстровані"
+    },
+    "validation": {
+      "emailRequired": "Email обов'язковий",
+      "emailInvalid": "Введіть коректний email",
+      "passwordRequired": "Пароль обов'язковий",
+      "passwordMinLength": "Пароль має містити щонайменше 8 символів",
+      "fullNameRequired": "Повне ім'я обов'язкове",
+      "fullNameMinLength": "Повне ім'я має містити щонайменше 2 символи",
+      "confirmPasswordRequired": "Підтвердження пароля обов'язкове",
+      "passwordsMismatch": "Паролі не збігаються"
+    }
+  },
+  "lists": {
+    "pageTitle": "Списки",
+    "segments": {
+      "myLists": "Мої списки",
+      "usersLists": "Списки користувачів"
+    },
+    "actions": {
+      "edit": "Редагувати список",
+      "delete": "Видалити список",
+      "deleteConfirmTitle": "Видалити список?",
+      "deleteConfirmMessage": "Ви впевнені, що хочете видалити цей список? Цю дію не можна скасувати.",
+      "deleteConfirmSubmit": "Так, видалити"
+    },
+    "filters": {
+      "searchPlaceholder": "Пошук",
+      "sortByLabel": "Сортувати за"
+    },
+    "sorting": {
+      "recentlyUpdated": "Останні оновлені",
+      "aToZ": "А -> Я",
+      "zToA": "Я -> А"
+    },
+    "create": {
+      "title": "Створити список",
+      "titleLabel": "Назва",
+      "deadlineLabel": "Дедлайн",
+      "colorLabel": "Колір",
+      "selectColor": "Обрати колір {color}",
+      "cancel": "Скасувати",
+      "submit": "Створити список"
+    },
+    "edit": {
+      "title": "Редагувати список",
+      "submit": "Зберегти зміни",
+      "confirmTitle": "Зберегти зміни?",
+      "confirmMessage": "Ви точно впевнені, що хочете зберегти ці зміни у списку?",
+      "confirmSubmit": "Так, зберегти"
+    },
+    "toast": {
+      "created": "Новий список створено",
+      "updated": "Список оновлено",
+      "deleted": "Список успішно видалено"
+    },
+    "validation": {
+      "titleRequired": "Назва обов'язкова",
+      "titleMinLength": "Назва має містити щонайменше 2 символи",
+      "colorRequired": "Колір обов'язковий",
+      "deadlineRequired": "Дедлайн обов'язковий"
+    }
+  },
+  "tasks": {
+    "addTask": "Додати завдання",
+    "priorityLabel": "Пріоритет",
+    "allPriorities": "Усі пріоритети",
+    "sortByLabel": "Сортувати за",
+    "recentlyCreated": "Нещодавно створені",
+    "pendingColumn": "В процесі",
+    "completedColumn": "Завершено",
+    "loadError": "Не вдалось завантажити список"
+  },
+  "users": {
+    "pageTitle": "Керування користувачами",
+    "searchPlaceholder": "Пошук за email або іменем",
+    "roleLabel": "Роль",
+    "memberSince": "Учасник з",
+    "permissionsGranted": "наданих дозволів",
+    "roles": {
+      "admin": "Адміністратор",
+      "user": "Користувач",
+      "allRoles": "Усі ролі"
+    },
+    "table": {
+      "member": "Учасник",
+      "role": "Роль",
+      "registered": "Зареєстрований"
+    },
+    "actions": {
+      "remove": "Видалити",
+      "profile": "Профіль"
+    },
+    "permissions": {
+      "matrixTitle": "Матриця дозволів",
+      "allPermissionsLabel": "Усі дозволи",
+      "save": "Зберегти",
+      "moduleColumn": "Модуль"
+    },
+    "permissionsSets": {
+      "listPermissions": "Дозволи списків",
+      "userManagement": "Керування користувачами",
+      "tasksPermissions": "Дозволи завдань",
+      "analytics": "Аналітика",
+      "dashboard": "Дашборд"
+    },
+    "toast": {
+      "userDeleted": "Користувача успішно видалено",
+      "permissionsChanged": "Дозволи змінено",
+      "roleChanged": "Роль змінено"
+    }
   }
 }

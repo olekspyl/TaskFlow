@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { VSkeleton, VDate, VIcon } from '@/shared/ui/common'
 import { selectTypes } from '@/shared/types'
 import { getInitials } from '@/shared/utils'
 import { UsersTypes } from '../types'
+
+const { t } = useI18n()
 
 type Props = {
   user?: UsersTypes.UserResponse | null
@@ -62,7 +65,9 @@ onBeforeUnmount(() => document.removeEventListener('click', closeRoleMenu))
         <template v-else-if="user">
           <p class="text-uiHead text-txtPrimary">{{ user.name }}</p>
           <p class="text-bodyM text-muted">{{ user.email }}</p>
-          <p class="text-bodyM text-muted">Member since <VDate :date="user.createdAt" /></p>
+          <p class="text-bodyM text-muted">
+            {{ t('users.memberSince') }} <VDate :date="user.createdAt" />
+          </p>
         </template>
       </div>
     </div>
@@ -77,7 +82,7 @@ onBeforeUnmount(() => document.removeEventListener('click', closeRoleMenu))
           <span class="text-headingCard text-txtPrimary">
             {{ permissionsSummary.granted }} / {{ permissionsSummary.total }}
           </span>
-          <span class="text-bodyM text-muted">permissions granted</span>
+          <span class="text-bodyM text-muted">{{ t('users.permissionsGranted') }}</span>
         </template>
       </div>
 

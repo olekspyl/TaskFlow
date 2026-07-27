@@ -1,95 +1,61 @@
-import { reactive, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
-
+import { useI18n } from 'vue-i18n'
 import { cleanEmptyKeys } from '@/shared/utils'
-
 import { listsApi } from '../api'
+import { SORTING_LABEL_KEYS } from '../constants/sortingOptions'
 import type { SortingOption, ListSegment } from '../types/lists'
 
-type ListsParams = {
-  sort: string
-  order: 'asc' | 'desc'
-  q?: string
-  isOwn?: boolean
-}
-
-const createDefaultSorting = (): SortingOption => ({
-  label: 'Recently updated',
-  value: 'desc',
-  sortCategory: 'createdAt',
-})
-
 export const useListsQuery = defineStore('lists-query', () => {
+  const { t, locale } = useI18n()
   const { getLists } = listsApi()
+
+  const createDefaultSorting = (): SortingOption => ({
+    id: 'recently-updated',
+    label: t(SORTING_LABEL_KEYS['recently-updated']!),
+    value: 'desc',
+    sortCategory: 'createdAt',
+  })
 
   const filtering = ref('')
   const sorting = ref<SortingOption>(createDefaultSorting())
 
-  const myListsParams = reactive<ListsParams>({
-    sort: sorting.value.sortCategory,
-    order: sorting.value.value,
-    isOwn: true,
+  watch(locale, () => {
+    const labelKey = SORTING_LABEL_KEYS[sorting.value.id]
+
+    if (labelKey) {
+      sorting.value = { ...sorting.value, label: t(labelKey) }
+    }
   })
 
-  const usersListsParams = reactive<ListsParams>({
-    sort: sorting.value.sortCategory,
-    order: sorting.value.value,
-  })
+  const { data: lists, loading: listsLoading, execute: fetchLists, cacheKey } = getLists()
 
-  const {
-    data: myLists,
-    loading: myListsLoading,
-    execute: fetchMyLists,
-    cacheKey: myListsCacheKey,
-  } = getLists({
-    // immediate: true,
-    lazy: true,
-    params: myListsParams,
-  })
+  const myListsCacheKey = ref<string | null>(null)
+  const usersListsCacheKey = ref<string | null>(null)
 
-  const {
-    data: usersLists,
-    loading: usersListsLoading,
-    execute: fetchUsersLists,
-  } = getLists({
-    lazy: true,
-    params: usersListsParams,
-    cache: true,
-  })
-
-  function syncParams(): void {
+  function buildParams(segment: ListSegment) {
     const sharedParams = cleanEmptyKeys({
       sort: sorting.value.sortCategory,
       order: sorting.value.value,
       q: filtering.value,
     })
 
-    Object.assign(myListsParams, sharedParams, {
-      isOwn: true,
-    })
-
-    Object.assign(usersListsParams, sharedParams)
-
-    if (!sharedParams.q) {
-      delete myListsParams.q
-      delete usersListsParams.q
-    }
+    return segment === 'myLists' ? { ...sharedParams, isOwn: true } : { ...sharedParams }
   }
 
   async function refetch(segment: ListSegment): Promise<void> {
-    syncParams()
-
     if (segment === 'myLists') {
-      await fetchMyLists({
-        params: { ...myListsParams },
+      await fetchLists({
+        params: buildParams(segment),
+        cache: { staleTime: Number.MAX_SAFE_INTEGER },
       })
+      myListsCacheKey.value = cacheKey.value
 
       return
     }
 
-    await fetchUsersLists({
-      params: { ...usersListsParams },
-    })
+    await fetchLists({ params: buildParams(segment), cache: false })
+    usersListsCacheKey.value = cacheKey.value
   }
 
   async function resetFilters(segment: ListSegment): Promise<void> {
@@ -100,22 +66,14 @@ export const useListsQuery = defineStore('lists-query', () => {
   }
 
   return {
-    myLists,
-    usersLists,
-
-    myListsLoading,
-    usersListsLoading,
-
+    lists,
+    listsLoading,
     filtering,
     sorting,
 
-    myListsParams,
-    usersListsParams,
-
     myListsCacheKey,
+    usersListsCacheKey,
 
-    fetchMyLists,
-    fetchUsersLists,
     refetch,
     resetFilters,
   }

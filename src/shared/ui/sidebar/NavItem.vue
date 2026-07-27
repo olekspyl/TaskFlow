@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { NavigationTypes } from '@/shared/types'
 import { VIcon } from '@/shared/ui/common'
 import { navItems } from '@/shared/constants'
 import { useUserStore } from '@/shared/stores'
+
+const { t } = useI18n()
 
 type Props = {
   items?: NavigationTypes.NavItem | NavigationTypes.NavItem[]
@@ -48,16 +51,20 @@ const handleClick = (item: NavigationTypes.NavItem) => {
     props.onClick?.(item)
   }
 }
+
+const getTitle = (item: NavigationTypes.NavItem): string => {
+  return item.titleKey ? t(item.titleKey) : (item.title ?? '')
+}
 </script>
 
 <template>
   <component
     :is="componentTag"
     v-for="item in itemsArr"
-    :key="`${props.do}-${item.title}`"
+    :key="`${props.do}-${item.titleKey ?? item.title}`"
     v-bind="getComponentProps(item)"
     class="link group flex w-full items-center gap-[9px] rounded-[7px] px-2 py-[7px] text-txtSecondaryDark"
-    :aria-label="item.title"
+    :aria-label="getTitle(item)"
     @click="handleClick(item)"
   >
     <slot name="icon" :item="item">
@@ -65,7 +72,7 @@ const handleClick = (item: NavigationTypes.NavItem) => {
     </slot>
 
     <span class="truncate leading-[1.3]">
-      {{ item.title }}
+      {{ getTitle(item) }}
     </span>
   </component>
 </template>
